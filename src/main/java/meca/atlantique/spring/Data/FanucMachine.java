@@ -1,6 +1,8 @@
 package meca.atlantique.spring.Data;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -13,10 +15,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "fanucMachine")
 public class FanucMachine extends Machine {
-    private String serie;
+    @Enumerated(EnumType.STRING)
+    private EnumSeries serie;
     private short handle;
 
-    public FanucMachine(String ip, short port, String name, String serie, short handle) {
+    public FanucMachine(String ip, short port, String name, EnumSeries serie, short handle) {
         super(ip, port, name);
         this.setSerie(serie);
         this.setHandle(handle);

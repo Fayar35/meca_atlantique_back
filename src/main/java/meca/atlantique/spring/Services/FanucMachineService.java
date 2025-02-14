@@ -30,4 +30,8 @@ public class FanucMachineService {
     public boolean has(String ip) {
         return repository.existsById(ip);
     }
+
+    public void removeByIp(String ip) {
+        repository.deleteByIp(ip);
+    }
 }

@@ -105,7 +105,7 @@ public class MainController {
             machine = connectToFanucMachine(ip, port);
         }
 
-        if (machine.getSerie() == EnumSeries.SERIE_15.toString() || machine.getSerie() == EnumSeries.SERIE_15i.toString()) {
+        if (machine.getSerie() == EnumSeries.SERIE_15 || machine.getSerie() == EnumSeries.SERIE_15i) {
             ODBST_15 stats = new ODBST_15();
             FanucApi.INSTANCE.cnc_statinfo(machine.getHandle(), stats);
             return ODBSTMapper.INSTANCE.ODBST_15ToODBSTDto(stats);
@@ -114,6 +114,11 @@ public class MainController {
             FanucApi.INSTANCE.cnc_statinfo(machine.getHandle(), stats);
             return ODBSTMapper.INSTANCE.ODBST_OTHERToODBSTDto(stats);
         }
+    }
+
+    @GetMapping("/removeFanucMachine")
+    void removeFanucMachine(@RequestParam String ip) {
+        fanucMachineService.removeByIp(ip);
     }
 
     private FanucMachine connectToFanucMachine(String ip, short port) {
@@ -135,6 +140,6 @@ public class MainController {
 
         EnumSeries serie = FanucMachine.getEnumSeriesFromSysInfos(info_system.cnc_type, info_system.addinfo);
 
-        return new FanucMachine(ip, port, name, serie.toString(), handle.getValue());
+        return new FanucMachine(ip, port, name, serie, handle.getValue());
     }
 }
