@@ -27,54 +27,35 @@ import meca.atlantique.fanuc.FanucApi.ODBST_15;
 import meca.atlantique.fanuc.FanucApi.ODBST_OTHER;
 import meca.atlantique.fanuc.FanucApi.ODBSYS;
 import meca.atlantique.spring.Data.EnumSeries;
+import meca.atlantique.spring.Data.FanucMachine;
 import meca.atlantique.spring.Data.Machine;
 import meca.atlantique.spring.Data.ODBSTDto;
 import meca.atlantique.spring.Mapper.ODBSTMapper;
-import meca.atlantique.spring.Service.MachineService;
+import meca.atlantique.spring.Services.FanucMachineService;
 
 @RestController
 @AllArgsConstructor
 public class MainController {
     static short DEFAULT_PORT = (short) 8193;
     @Autowired
-    private final MachineService machineService;
+    private final FanucMachineService fanucMachineService;
 
     @GetMapping("/getFanucMachine")
-    Machine getMachine(@RequestParam String ip, @RequestParam("port") Optional<Short> portOptional) {
-        if (machineService.has(ip)) {
-            return machineService.getByIp(ip);
+    Machine getFanucMachine(@RequestParam String ip, @RequestParam("port") Optional<Short> portOptional) {
+        if (fanucMachineService.has(ip)) {
+            return fanucMachineService.getByIp(ip);
         }
 
         short port = portOptional.orElse(DEFAULT_PORT);
-        
-        ShortByReference handle = new ShortByReference();
-        short error_code = FanucApi.INSTANCE.cnc_allclibhndl3(ip, port, new NativeLong(10), handle);
-        if (error_code != 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cannot connect to " + ip + ":" + port + ", error code : " + error_code);
-        }
-        
-        ODBSYS info_system = new ODBSYS();
-        error_code = FanucApi.INSTANCE.cnc_sysinfo(handle.getValue(), info_system);
-
-        String name = "Series " + 
-            new String(info_system.cnc_type) + 
-            ((info_system.addinfo & 0x70) != 0 ? "i" : "") + "-" +
-            new String(info_system.mt_type) + " (" +
-            new String(info_system.series) + "-" +
-            new String(info_system.version) + ")";
-
-        EnumSeries serie = Machine.getEnumSeriesFromSysInfos(info_system.cnc_type, info_system.addinfo);
-
-        Machine machine = new Machine(ip, port, name, serie.toString(), handle.getValue());
-
-        machineService.add(machine);
+        FanucMachine machine = connectToFanucMachine(ip, port);
+        fanucMachineService.add(machine);
         
         return machine;
     }
 
     @GetMapping("/getAllMachine")
     List<Machine> getAllMachine() {
-        return machineService.getAll();
+        return fanucMachineService.getAll().stream().map(m -> (Machine) m).collect(Collectors.toList());
     }
 
     @GetMapping("/error")
@@ -117,11 +98,11 @@ public class MainController {
     ODBSTDto getFanucStatus(@RequestParam String ip, @RequestParam("port") Optional<Short> portOptional) {
         short port = portOptional.orElse(DEFAULT_PORT);
 
-        Machine machine;
-        if (machineService.has(ip)) {
-            machine = machineService.getByIp(ip);
+        FanucMachine machine;
+        if (fanucMachineService.has(ip)) {
+            machine = fanucMachineService.getByIp(ip);
         } else {
-            machine = getMachine(ip, Optional.of(port));
+            machine = connectToFanucMachine(ip, port);
         }
 
         if (machine.getSerie() == EnumSeries.SERIE_15.toString() || machine.getSerie() == EnumSeries.SERIE_15i.toString()) {
@@ -133,5 +114,27 @@ public class MainController {
             FanucApi.INSTANCE.cnc_statinfo(machine.getHandle(), stats);
             return ODBSTMapper.INSTANCE.ODBST_OTHERToODBSTDto(stats);
         }
+    }
+
+    private FanucMachine connectToFanucMachine(String ip, short port) {
+        ShortByReference handle = new ShortByReference();
+        short error_code = FanucApi.INSTANCE.cnc_allclibhndl3(ip, port, new NativeLong(2), handle);
+        if (error_code != 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cannot connect to " + ip + ":" + port + ", error code : " + error_code);
+        }
+        
+        ODBSYS info_system = new ODBSYS();
+        error_code = FanucApi.INSTANCE.cnc_sysinfo(handle.getValue(), info_system);
+
+        String name = "Series " + 
+            new String(info_system.cnc_type) + 
+            ((info_system.addinfo & 0x70) != 0 ? "i" : "") + "-" +
+            new String(info_system.mt_type) + " (" +
+            new String(info_system.series) + "-" +
+            new String(info_system.version) + ")";
+
+        EnumSeries serie = FanucMachine.getEnumSeriesFromSysInfos(info_system.cnc_type, info_system.addinfo);
+
+        return new FanucMachine(ip, port, name, serie.toString(), handle.getValue());
     }
 }
