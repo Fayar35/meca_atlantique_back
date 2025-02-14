@@ -5,12 +5,11 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jna.NativeLong;
 import com.sun.jna.ptr.ShortByReference;
 
+import lombok.AllArgsConstructor;
 import meca.atlantique.fanuc.FanucApi;
 import meca.atlantique.fanuc.FanucApi.ODBST_15;
 import meca.atlantique.fanuc.FanucApi.ODBST_OTHER;
@@ -30,14 +30,21 @@ import meca.atlantique.spring.Data.EnumSeries;
 import meca.atlantique.spring.Data.Machine;
 import meca.atlantique.spring.Data.ODBSTDto;
 import meca.atlantique.spring.Mapper.ODBSTMapper;
+import meca.atlantique.spring.Service.MachineService;
 
 @RestController
+@AllArgsConstructor
 public class MainController {
     static short DEFAULT_PORT = (short) 8193;
-    Map<String, Machine> machines = new HashMap<String, Machine>();
+    @Autowired
+    private final MachineService machineService;
 
     @GetMapping("/getFanucMachine")
     Machine getMachine(@RequestParam String ip, @RequestParam("port") Optional<Short> portOptional) {
+        if (machineService.has(ip)) {
+            return machineService.getByIp(ip);
+        }
+
         short port = portOptional.orElse(DEFAULT_PORT);
         
         ShortByReference handle = new ShortByReference();
@@ -45,27 +52,29 @@ public class MainController {
         if (error_code != 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cannot connect to " + ip + ":" + port + ", error code : " + error_code);
         }
-
-        Machine machine = new Machine();
-        machine.setIp(ip);
-        machine.setPort(port);
-        machine.setHandle(handle.getValue());
         
         ODBSYS info_system = new ODBSYS();
         error_code = FanucApi.INSTANCE.cnc_sysinfo(handle.getValue(), info_system);
 
-        machine.setName("Series " + 
+        String name = "Series " + 
             new String(info_system.cnc_type) + 
             ((info_system.addinfo & 0x70) != 0 ? "i" : "") + "-" +
             new String(info_system.mt_type) + " (" +
             new String(info_system.series) + "-" +
-            new String(info_system.version) + ")"
-        );
-        machine.setSerie(Machine.getEnumSeriesFromSysInfos(info_system.cnc_type, info_system.addinfo));
+            new String(info_system.version) + ")";
 
-        machines.put(ip, machine);
+        EnumSeries serie = Machine.getEnumSeriesFromSysInfos(info_system.cnc_type, info_system.addinfo);
+
+        Machine machine = new Machine(ip, port, name, serie.toString(), handle.getValue());
+
+        machineService.add(machine);
         
         return machine;
+    }
+
+    @GetMapping("/getAllMachine")
+    List<Machine> getAllMachine() {
+        return machineService.getAll();
     }
 
     @GetMapping("/error")
@@ -109,13 +118,13 @@ public class MainController {
         short port = portOptional.orElse(DEFAULT_PORT);
 
         Machine machine;
-        if (machines.containsKey(ip)) {
-            machine = machines.get(ip);
+        if (machineService.has(ip)) {
+            machine = machineService.getByIp(ip);
         } else {
             machine = getMachine(ip, Optional.of(port));
         }
 
-        if (machine.getSerie() == EnumSeries.SERIE_15 || machine.getSerie() == EnumSeries.SERIE_15i) {
+        if (machine.getSerie() == EnumSeries.SERIE_15.toString() || machine.getSerie() == EnumSeries.SERIE_15i.toString()) {
             ODBST_15 stats = new ODBST_15();
             FanucApi.INSTANCE.cnc_statinfo(machine.getHandle(), stats);
             return ODBSTMapper.INSTANCE.ODBST_15ToODBSTDto(stats);

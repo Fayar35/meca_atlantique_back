@@ -1,14 +1,24 @@
 package meca.atlantique.spring.Data;
 
-import lombok.Data;
+import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "machine")
 public class Machine {
-    String ip;
-    short port;
-    String name;
-    EnumSeries serie;
-    short handle;
+    @Id
+    private String ip;
+
+    private short port;
+    private String name;
+    private String serie;
+    private short handle;
 
     public static EnumSeries getEnumSeriesFromSysInfos(byte[] cncType, short addinfo) {
         switch (new String(cncType)) {
