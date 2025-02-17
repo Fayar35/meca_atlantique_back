@@ -19,7 +19,9 @@ public class FanucMachine extends Machine {
     private EnumSeries serie;
 
     public FanucMachine(String ip, short port, String name, EnumSeries serie) {
-        super(ip, port, name);
+        this.setIp(ip);
+        this.setPort(port);
+        this.setName(name);
         this.setSerie(serie);
     }
 
