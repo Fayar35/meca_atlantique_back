@@ -17,12 +17,10 @@ import lombok.NoArgsConstructor;
 public class FanucMachine extends Machine {
     @Enumerated(EnumType.STRING)
     private EnumSeries serie;
-    private short handle;
 
-    public FanucMachine(String ip, short port, String name, EnumSeries serie, short handle) {
+    public FanucMachine(String ip, short port, String name, EnumSeries serie) {
         super(ip, port, name);
         this.setSerie(serie);
-        this.setHandle(handle);
     }
 
     public static EnumSeries getEnumSeriesFromSysInfos(byte[] cncType, short addinfo) {

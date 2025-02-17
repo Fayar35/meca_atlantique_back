@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import meca.atlantique.spring.Data.FanucMachine;
 import meca.atlantique.spring.Repositories.FanucMachineRepository;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class FanucMachineService {
     @Autowired
@@ -20,7 +22,7 @@ public class FanucMachineService {
     }
 
     public FanucMachine getByIp(String ip) {
-        return repository.findByIp(ip);
+        return repository.findByIp(ip).orElse(null);
     }
 
     public FanucMachine add(FanucMachine machine) {
