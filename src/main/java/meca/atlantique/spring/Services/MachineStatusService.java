@@ -1,5 +1,6 @@
 package meca.atlantique.spring.Services;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -15,6 +16,10 @@ public class MachineStatusService {
 
     public void saveMachineStatus(MachineStatus status) {
         machineStatusRepository.save(status);
+    }
+
+    public List<MachineStatus> getHistoryForDate(String machineIp, LocalDate date) {
+        return machineStatusRepository.findByMachineIpAndDate(machineIp, date);
     }
 
     public List<MachineStatus> getMachineHistory(String machineIp) {
