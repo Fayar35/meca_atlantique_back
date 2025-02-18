@@ -127,6 +127,9 @@ public class FanucMachineService {
                         state = MachineState.RUNNING;
                         break;
                     }
+                    case 4: {
+                        state = MachineState.RUNNING;
+                    }
                     default: {
                         state = MachineState.UNKNOWN;
                     }

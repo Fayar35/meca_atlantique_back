@@ -1,0 +1,242 @@
+2025-02-17 16:51:14.249 CET [11668] LOG:  démarrage de PostgreSQL 17.3 on x86_64-windows, compiled by msvc-19.42.34436, 64-bit
+2025-02-17 16:51:14.255 CET [11668] LOG:  en écoute sur IPv6, adresse « ::1 », port 5432
+2025-02-17 16:51:14.255 CET [11668] LOG:  en écoute sur IPv4, adresse « 127.0.0.1 », port 5432
+2025-02-17 16:51:14.308 CET [13892] LOG:  le système de bases de données a été arrêté à 2025-02-17 16:41:23 CET
+2025-02-17 16:51:14.335 CET [11668] LOG:  le système de bases de données est prêt pour accepter les connexions
+2025-02-17 16:56:14.322 CET [7692] LOG:  début du checkpoint : time
+2025-02-17 16:56:15.016 CET [7692] LOG:  checkpoint complete: wrote 9 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.660 s, sync=0.008 s, total=0.706 s; sync files=7, longest=0.002 s, average=0.002 s; distance=13 kB, estimate=13 kB; lsn=0/1B21B98, redo lsn=0/1B21B40
+2025-02-17 17:01:14.049 CET [7692] LOG:  début du checkpoint : time
+2025-02-17 17:01:14.409 CET [7692] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.332 s, sync=0.004 s, total=0.373 s; sync files=4, longest=0.002 s, average=0.001 s; distance=8 kB, estimate=13 kB; lsn=0/1B23E40, redo lsn=0/1B23DE8
+2025-02-17 17:03:35.210 CET [11668] LOG:  a reçu une demande d'arrêt rapide
+2025-02-17 17:03:35.223 CET [11668] LOG:  annulation des transactions actives
+2025-02-17 17:03:35.224 CET [3808] ERREUR:  annulation de la requête à la demande de l'utilisateur
+2025-02-17 17:03:35.232 CET [16948] FATAL:  arrÃªt des connexions suite Ã  la demande de l'administrateur
+2025-02-17 17:03:35.261 CET [11668] LOG:  processus en tâche de fond « logical replication launcher » (PID 3808) a quitté avec le code de sortie 1
+2025-02-17 17:03:35.284 CET [7692] LOG:  arrêt en cours
+2025-02-17 17:03:35.288 CET [7692] LOG:  début du checkpoint : shutdown immediate
+2025-02-17 17:03:35.706 CET [7692] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.008 s, sync=0.378 s, total=0.421 s; sync files=4, longest=0.371 s, average=0.095 s; distance=9 kB, estimate=12 kB; lsn=0/1B26268, redo lsn=0/1B26268
+2025-02-17 17:03:35.727 CET [11668] LOG:  le système de base de données est arrêté
+2025-02-18 08:20:42.114 CET [8208] LOG:  démarrage de PostgreSQL 17.3 on x86_64-windows, compiled by msvc-19.42.34436, 64-bit
+2025-02-18 08:20:42.120 CET [8208] LOG:  en écoute sur IPv6, adresse « ::1 », port 5432
+2025-02-18 08:20:42.120 CET [8208] LOG:  en écoute sur IPv4, adresse « 127.0.0.1 », port 5432
+2025-02-18 08:20:42.182 CET [15440] LOG:  le système de bases de données a été arrêté à 2025-02-17 17:03:35 CET
+2025-02-18 08:20:42.216 CET [8208] LOG:  le système de bases de données est prêt pour accepter les connexions
+2025-02-18 08:25:42.175 CET [5752] LOG:  début du checkpoint : time
+2025-02-18 08:25:42.520 CET [5752] LOG:  checkpoint complete: wrote 6 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.328 s, sync=0.004 s, total=0.352 s; sync files=5, longest=0.002 s, average=0.001 s; distance=9 kB, estimate=9 kB; lsn=0/1B28848, redo lsn=0/1B287F0
+2025-02-18 08:30:42.521 CET [5752] LOG:  début du checkpoint : time
+2025-02-18 08:30:42.877 CET [5752] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.336 s, sync=0.004 s, total=0.359 s; sync files=4, longest=0.002 s, average=0.001 s; distance=9 kB, estimate=9 kB; lsn=0/1B2AFE8, redo lsn=0/1B2AF90
+2025-02-18 08:35:42.891 CET [5752] LOG:  début du checkpoint : time
+2025-02-18 08:35:43.261 CET [5752] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.336 s, sync=0.004 s, total=0.376 s; sync files=4, longest=0.002 s, average=0.001 s; distance=10 kB, estimate=10 kB; lsn=0/1B2D970, redo lsn=0/1B2D918
+2025-02-18 08:36:20.769 CET [8208] LOG:  a reçu une demande d'arrêt rapide
+2025-02-18 08:36:20.777 CET [8208] LOG:  annulation des transactions actives
+2025-02-18 08:36:20.781 CET [11384] ERREUR:  annulation de la requête à la demande de l'utilisateur
+2025-02-18 08:36:20.789 CET [6416] FATAL:  arrÃªt des connexions suite Ã  la demande de l'administrateur
+2025-02-18 08:36:20.825 CET [8208] LOG:  processus en tâche de fond « logical replication launcher » (PID 11384) a quitté avec le code de sortie 1
+2025-02-18 08:36:20.844 CET [5752] LOG:  arrêt en cours
+2025-02-18 08:36:20.846 CET [5752] LOG:  début du checkpoint : shutdown immediate
+2025-02-18 08:36:20.989 CET [5752] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.004 s, sync=0.118 s, total=0.145 s; sync files=4, longest=0.116 s, average=0.030 s; distance=10 kB, estimate=10 kB; lsn=0/1B30478, redo lsn=0/1B30478
+2025-02-18 08:36:21.020 CET [8208] LOG:  le système de base de données est arrêté
+2025-02-18 08:39:24.093 CET [10364] LOG:  démarrage de PostgreSQL 17.3 on x86_64-windows, compiled by msvc-19.42.34436, 64-bit
+2025-02-18 08:39:24.097 CET [10364] LOG:  en écoute sur IPv6, adresse « ::1 », port 5432
+2025-02-18 08:39:24.097 CET [10364] LOG:  en écoute sur IPv4, adresse « 127.0.0.1 », port 5432
+2025-02-18 08:39:24.164 CET [15404] LOG:  le système de bases de données a été arrêté à 2025-02-18 08:36:20 CET
+2025-02-18 08:39:24.192 CET [10364] LOG:  le système de bases de données est prêt pour accepter les connexions
+2025-02-18 08:44:24.169 CET [7788] LOG:  début du checkpoint : time
+2025-02-18 08:44:24.747 CET [7788] LOG:  checkpoint complete: wrote 8 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.557 s, sync=0.007 s, total=0.585 s; sync files=7, longest=0.002 s, average=0.001 s; distance=23 kB, estimate=23 kB; lsn=0/1B363B8, redo lsn=0/1B36328
+2025-02-18 08:49:24.745 CET [7788] LOG:  début du checkpoint : time
+2025-02-18 08:49:25.202 CET [7788] LOG:  checkpoint complete: wrote 5 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.443 s, sync=0.007 s, total=0.457 s; sync files=6, longest=0.002 s, average=0.002 s; distance=3 kB, estimate=21 kB; lsn=0/1B37208, redo lsn=0/1B371B0
+2025-02-18 08:54:24.201 CET [7788] LOG:  début du checkpoint : time
+2025-02-18 08:54:24.559 CET [7788] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.334 s, sync=0.004 s, total=0.359 s; sync files=4, longest=0.002 s, average=0.001 s; distance=4 kB, estimate=19 kB; lsn=0/1B382C8, redo lsn=0/1B38238
+2025-02-18 08:59:24.568 CET [7788] LOG:  début du checkpoint : time
+2025-02-18 08:59:24.901 CET [7788] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.321 s, sync=0.003 s, total=0.333 s; sync files=4, longest=0.002 s, average=0.001 s; distance=4 kB, estimate=18 kB; lsn=0/1B394C0, redo lsn=0/1B39468
+2025-02-18 09:04:24.907 CET [7788] LOG:  début du checkpoint : time
+2025-02-18 09:04:25.261 CET [7788] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.336 s, sync=0.004 s, total=0.359 s; sync files=4, longest=0.002 s, average=0.001 s; distance=4 kB, estimate=17 kB; lsn=0/1B3A8B8, redo lsn=0/1B3A860
+2025-02-18 09:09:24.261 CET [7788] LOG:  début du checkpoint : time
+2025-02-18 09:09:24.604 CET [7788] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.332 s, sync=0.004 s, total=0.344 s; sync files=4, longest=0.002 s, average=0.001 s; distance=5 kB, estimate=15 kB; lsn=0/1B3BE58, redo lsn=0/1B3BE00
+2025-02-18 09:11:02.006 CET [10364] LOG:  a reçu une demande d'arrêt rapide
+2025-02-18 09:11:02.010 CET [10364] LOG:  annulation des transactions actives
+2025-02-18 09:11:02.014 CET [1960] FATAL:  arrÃªt des connexions suite Ã  la demande de l'administrateur
+2025-02-18 09:11:02.018 CET [15236] ERREUR:  annulation de la requête à la demande de l'utilisateur
+2025-02-18 09:11:02.038 CET [10364] LOG:  processus en tâche de fond « logical replication launcher » (PID 15236) a quitté avec le code de sortie 1
+2025-02-18 09:11:02.041 CET [7788] LOG:  arrêt en cours
+2025-02-18 09:11:02.042 CET [7788] LOG:  début du checkpoint : shutdown immediate
+2025-02-18 09:11:02.054 CET [7788] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.002 s, sync=0.003 s, total=0.013 s; sync files=4, longest=0.001 s, average=0.001 s; distance=5 kB, estimate=14 kB; lsn=0/1B3D568, redo lsn=0/1B3D568
+2025-02-18 09:11:02.074 CET [10364] LOG:  le système de base de données est arrêté
+2025-02-18 09:18:05.960 CET [7516] LOG:  démarrage de PostgreSQL 17.3 on x86_64-windows, compiled by msvc-19.42.34436, 64-bit
+2025-02-18 09:18:05.966 CET [7516] LOG:  en écoute sur IPv6, adresse « ::1 », port 5432
+2025-02-18 09:18:05.966 CET [7516] LOG:  en écoute sur IPv4, adresse « 127.0.0.1 », port 5432
+2025-02-18 09:18:06.122 CET [6736] LOG:  le système de bases de données a été arrêté à 2025-02-18 09:11:02 CET
+2025-02-18 09:18:06.153 CET [7516] LOG:  le système de bases de données est prêt pour accepter les connexions
+2025-02-18 09:23:06.051 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 09:23:06.495 CET [5668] LOG:  checkpoint complete: wrote 6 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.366 s, sync=0.006 s, total=0.481 s; sync files=5, longest=0.003 s, average=0.002 s; distance=6 kB, estimate=6 kB; lsn=0/1B3EE58, redo lsn=0/1B3EE00
+2025-02-18 09:28:06.521 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 09:28:06.868 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.325 s, sync=0.004 s, total=0.353 s; sync files=4, longest=0.001 s, average=0.001 s; distance=6 kB, estimate=6 kB; lsn=0/1B408F8, redo lsn=0/1B408A0
+2025-02-18 09:33:06.881 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 09:33:07.236 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.332 s, sync=0.005 s, total=0.360 s; sync files=4, longest=0.002 s, average=0.002 s; distance=7 kB, estimate=7 kB; lsn=0/1B42590, redo lsn=0/1B42538
+2025-02-18 09:38:06.232 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 09:38:06.600 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.333 s, sync=0.005 s, total=0.368 s; sync files=4, longest=0.002 s, average=0.002 s; distance=7 kB, estimate=7 kB; lsn=0/1B443D8, redo lsn=0/1B44380
+2025-02-18 09:43:06.618 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 09:43:06.977 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.338 s, sync=0.003 s, total=0.364 s; sync files=4, longest=0.001 s, average=0.001 s; distance=7 kB, estimate=7 kB; lsn=0/1B463A8, redo lsn=0/1B46350
+2025-02-18 09:48:06.993 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 09:48:07.335 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.327 s, sync=0.008 s, total=0.343 s; sync files=4, longest=0.006 s, average=0.002 s; distance=8 kB, estimate=8 kB; lsn=0/1B48560, redo lsn=0/1B48508
+2025-02-18 09:53:06.353 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 09:53:06.908 CET [5668] LOG:  checkpoint complete: wrote 6 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.535 s, sync=0.005 s, total=0.562 s; sync files=6, longest=0.001 s, average=0.001 s; distance=23 kB, estimate=23 kB; lsn=0/1B4E548, redo lsn=0/1B4E4F0
+2025-02-18 09:58:06.931 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 09:58:07.409 CET [5668] LOG:  checkpoint complete: wrote 5 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.453 s, sync=0.007 s, total=0.485 s; sync files=5, longest=0.002 s, average=0.002 s; distance=9 kB, estimate=22 kB; lsn=0/1B50A70, redo lsn=0/1B50A18
+2025-02-18 10:03:06.428 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 10:03:06.813 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.334 s, sync=0.005 s, total=0.395 s; sync files=4, longest=0.002 s, average=0.002 s; distance=9 kB, estimate=21 kB; lsn=0/1B53158, redo lsn=0/1B53100
+2025-02-18 10:08:06.825 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 10:08:07.183 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.336 s, sync=0.008 s, total=0.361 s; sync files=4, longest=0.006 s, average=0.002 s; distance=10 kB, estimate=20 kB; lsn=0/1B559B8, redo lsn=0/1B55960
+2025-02-18 10:13:06.185 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 10:13:06.546 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.334 s, sync=0.005 s, total=0.366 s; sync files=4, longest=0.003 s, average=0.002 s; distance=10 kB, estimate=19 kB; lsn=0/1B58428, redo lsn=0/1B583D0
+2025-02-18 10:18:06.563 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 10:18:06.927 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.334 s, sync=0.004 s, total=0.371 s; sync files=4, longest=0.002 s, average=0.001 s; distance=11 kB, estimate=18 kB; lsn=0/1B5B030, redo lsn=0/1B5AFD8
+2025-02-18 10:23:06.953 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 10:23:07.313 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.336 s, sync=0.005 s, total=0.371 s; sync files=4, longest=0.002 s, average=0.002 s; distance=11 kB, estimate=17 kB; lsn=0/1B5DDC0, redo lsn=0/1B5DD68
+2025-02-18 10:28:06.324 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 10:28:06.681 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.332 s, sync=0.004 s, total=0.367 s; sync files=4, longest=0.002 s, average=0.001 s; distance=11 kB, estimate=17 kB; lsn=0/1B60D50, redo lsn=0/1B60CF8
+2025-02-18 10:33:06.695 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 10:33:07.034 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.309 s, sync=0.008 s, total=0.343 s; sync files=4, longest=0.003 s, average=0.002 s; distance=12 kB, estimate=16 kB; lsn=0/1B63E88, redo lsn=0/1B63E30
+2025-02-18 10:38:06.049 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 10:38:06.413 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.342 s, sync=0.003 s, total=0.370 s; sync files=4, longest=0.002 s, average=0.001 s; distance=12 kB, estimate=16 kB; lsn=0/1B67188, redo lsn=0/1B67130
+2025-02-18 10:43:06.424 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 10:43:06.780 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.331 s, sync=0.004 s, total=0.364 s; sync files=4, longest=0.002 s, average=0.001 s; distance=13 kB, estimate=15 kB; lsn=0/1B6A680, redo lsn=0/1B6A5F0
+2025-02-18 10:48:06.802 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 10:48:07.153 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.330 s, sync=0.006 s, total=0.357 s; sync files=4, longest=0.003 s, average=0.002 s; distance=13 kB, estimate=15 kB; lsn=0/1B6DCA0, redo lsn=0/1B6DC48
+2025-02-18 10:53:06.177 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 10:53:06.539 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.333 s, sync=0.009 s, total=0.362 s; sync files=4, longest=0.006 s, average=0.003 s; distance=6 kB, estimate=14 kB; lsn=0/1B6F4A0, redo lsn=0/1B6F448
+2025-02-18 10:58:06.557 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 10:58:06.919 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.332 s, sync=0.008 s, total=0.362 s; sync files=4, longest=0.006 s, average=0.002 s; distance=6 kB, estimate=13 kB; lsn=0/1B70E88, redo lsn=0/1B70E30
+2025-02-18 11:03:06.937 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 11:03:07.510 CET [5668] LOG:  checkpoint complete: wrote 6 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.546 s, sync=0.006 s, total=0.580 s; sync files=6, longest=0.002 s, average=0.001 s; distance=24 kB, estimate=24 kB; lsn=0/1B771A8, redo lsn=0/1B77150
+2025-02-18 11:08:06.526 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 11:08:06.992 CET [5668] LOG:  checkpoint complete: wrote 5 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.442 s, sync=0.007 s, total=0.469 s; sync files=5, longest=0.003 s, average=0.002 s; distance=7 kB, estimate=23 kB; lsn=0/1B78F00, redo lsn=0/1B78EA8
+2025-02-18 11:13:07.008 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 11:13:07.364 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.336 s, sync=0.005 s, total=0.359 s; sync files=4, longest=0.002 s, average=0.002 s; distance=7 kB, estimate=21 kB; lsn=0/1B7AE18, redo lsn=0/1B7ADC0
+2025-02-18 11:18:07.376 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 11:18:07.734 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.341 s, sync=0.003 s, total=0.358 s; sync files=4, longest=0.002 s, average=0.001 s; distance=8 kB, estimate=20 kB; lsn=0/1B7CEA8, redo lsn=0/1B7CE50
+2025-02-18 11:23:07.750 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 11:23:08.102 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.330 s, sync=0.004 s, total=0.360 s; sync files=4, longest=0.002 s, average=0.001 s; distance=8 kB, estimate=19 kB; lsn=0/1B7F130, redo lsn=0/1B7F0D8
+2025-02-18 11:28:07.114 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 11:28:07.477 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.341 s, sync=0.005 s, total=0.368 s; sync files=4, longest=0.002 s, average=0.002 s; distance=9 kB, estimate=18 kB; lsn=0/1B81568, redo lsn=0/1B81510
+2025-02-18 11:33:07.481 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 11:33:07.828 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.335 s, sync=0.003 s, total=0.347 s; sync files=4, longest=0.002 s, average=0.001 s; distance=9 kB, estimate=17 kB; lsn=0/1B83B28, redo lsn=0/1B83AD0
+2025-02-18 11:38:07.825 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 11:38:08.162 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.322 s, sync=0.003 s, total=0.338 s; sync files=4, longest=0.001 s, average=0.001 s; distance=9 kB, estimate=16 kB; lsn=0/1B86320, redo lsn=0/1B86290
+2025-02-18 11:43:07.166 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 11:43:07.509 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.326 s, sync=0.004 s, total=0.343 s; sync files=4, longest=0.002 s, average=0.001 s; distance=10 kB, estimate=15 kB; lsn=0/1B88C50, redo lsn=0/1B88BF8
+2025-02-18 11:48:07.516 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 11:48:07.855 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.328 s, sync=0.004 s, total=0.339 s; sync files=4, longest=0.002 s, average=0.001 s; distance=10 kB, estimate=15 kB; lsn=0/1B8B730, redo lsn=0/1B8B6D8
+2025-02-18 11:53:07.866 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 11:53:08.222 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.335 s, sync=0.005 s, total=0.359 s; sync files=4, longest=0.002 s, average=0.002 s; distance=11 kB, estimate=14 kB; lsn=0/1B8E420, redo lsn=0/1B8E3C8
+2025-02-18 11:58:07.226 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 11:58:07.623 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.335 s, sync=0.024 s, total=0.405 s; sync files=4, longest=0.017 s, average=0.006 s; distance=11 kB, estimate=14 kB; lsn=0/1B91270, redo lsn=0/1B91218
+2025-02-18 12:03:07.645 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 12:03:08.026 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.342 s, sync=0.006 s, total=0.390 s; sync files=4, longest=0.002 s, average=0.002 s; distance=12 kB, estimate=14 kB; lsn=0/1B942D0, redo lsn=0/1B94278
+2025-02-18 12:08:07.042 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 12:08:07.397 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.330 s, sync=0.003 s, total=0.362 s; sync files=4, longest=0.002 s, average=0.001 s; distance=12 kB, estimate=14 kB; lsn=0/1B974C8, redo lsn=0/1B97470
+2025-02-18 12:13:07.411 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 12:13:07.762 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.329 s, sync=0.004 s, total=0.356 s; sync files=4, longest=0.002 s, average=0.001 s; distance=12 kB, estimate=14 kB; lsn=0/1B9A860, redo lsn=0/1B9A808
+2025-02-18 12:18:07.785 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 12:18:08.147 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.335 s, sync=0.005 s, total=0.374 s; sync files=4, longest=0.002 s, average=0.002 s; distance=13 kB, estimate=13 kB; lsn=0/1B9DDC8, redo lsn=0/1B9DD70
+2025-02-18 12:23:07.166 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 12:23:08.192 CET [5668] LOG:  checkpoint complete: wrote 10 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.003 s, sync=0.010 s, total=1.033 s; sync files=9, longest=0.003 s, average=0.002 s; distance=36 kB, estimate=36 kB; lsn=0/1BA7008, redo lsn=0/1BA6FB0
+2025-02-18 12:28:07.197 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 12:28:07.869 CET [5668] LOG:  checkpoint complete: wrote 7 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.664 s, sync=0.004 s, total=0.673 s; sync files=6, longest=0.001 s, average=0.001 s; distance=14 kB, estimate=34 kB; lsn=0/1BAA8F8, redo lsn=0/1BAA8A0
+2025-02-18 12:33:07.875 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 12:33:08.237 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.334 s, sync=0.008 s, total=0.362 s; sync files=4, longest=0.006 s, average=0.002 s; distance=14 kB, estimate=32 kB; lsn=0/1BAE370, redo lsn=0/1BAE318
+2025-02-18 12:38:07.274 CET [5668] LOG:  début du checkpoint : time
+2025-02-18 12:38:07.666 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.331 s, sync=0.009 s, total=0.408 s; sync files=4, longest=0.003 s, average=0.003 s; distance=15 kB, estimate=30 kB; lsn=0/1BB1FF0, redo lsn=0/1BB1F60
+2025-02-18 12:40:12.725 CET [7516] LOG:  a reçu une demande d'arrêt rapide
+2025-02-18 12:40:12.742 CET [7516] LOG:  annulation des transactions actives
+2025-02-18 12:40:12.748 CET [9248] ERREUR:  annulation de la requête à la demande de l'utilisateur
+2025-02-18 12:40:12.752 CET [7776] FATAL:  arrÃªt des connexions suite Ã  la demande de l'administrateur
+2025-02-18 12:40:12.785 CET [7516] LOG:  processus en tâche de fond « logical replication launcher » (PID 9248) a quitté avec le code de sortie 1
+2025-02-18 12:40:12.792 CET [5668] LOG:  arrêt en cours
+2025-02-18 12:40:12.798 CET [5668] LOG:  début du checkpoint : shutdown immediate
+2025-02-18 12:40:13.328 CET [5668] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.013 s, sync=0.482 s, total=0.534 s; sync files=4, longest=0.474 s, average=0.121 s; distance=15 kB, estimate=29 kB; lsn=0/1BB5D80, redo lsn=0/1BB5D80
+2025-02-18 12:40:13.369 CET [7516] LOG:  le système de base de données est arrêté
+2025-02-18 13:41:58.368 CET [17036] LOG:  démarrage de PostgreSQL 17.3 on x86_64-windows, compiled by msvc-19.42.34436, 64-bit
+2025-02-18 13:41:58.376 CET [17036] LOG:  en écoute sur IPv6, adresse « ::1 », port 5432
+2025-02-18 13:41:58.376 CET [17036] LOG:  en écoute sur IPv4, adresse « 127.0.0.1 », port 5432
+2025-02-18 13:41:58.431 CET [5172] LOG:  le système de bases de données a été arrêté à 2025-02-18 12:40:13 CET
+2025-02-18 13:41:58.463 CET [17036] LOG:  le système de bases de données est prêt pour accepter les connexions
+2025-02-18 13:46:58.451 CET [16672] LOG:  début du checkpoint : time
+2025-02-18 13:46:58.835 CET [16672] LOG:  checkpoint complete: wrote 6 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.346 s, sync=0.008 s, total=0.397 s; sync files=5, longest=0.004 s, average=0.002 s; distance=15 kB, estimate=15 kB; lsn=0/1BB9D50, redo lsn=0/1BB9CC0
+2025-02-18 13:51:58.848 CET [16672] LOG:  début du checkpoint : time
+2025-02-18 13:51:59.219 CET [16672] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.335 s, sync=0.008 s, total=0.374 s; sync files=4, longest=0.003 s, average=0.002 s; distance=8 kB, estimate=15 kB; lsn=0/1BBBE78, redo lsn=0/1BBBE20
+2025-02-18 13:56:58.241 CET [16672] LOG:  début du checkpoint : time
+2025-02-18 13:56:58.635 CET [16672] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.342 s, sync=0.011 s, total=0.409 s; sync files=4, longest=0.004 s, average=0.003 s; distance=8 kB, estimate=14 kB; lsn=0/1BBE1D8, redo lsn=0/1BBE180
+2025-02-18 14:01:58.662 CET [16672] LOG:  début du checkpoint : time
+2025-02-18 14:01:59.062 CET [16672] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.335 s, sync=0.017 s, total=0.413 s; sync files=4, longest=0.006 s, average=0.005 s; distance=9 kB, estimate=13 kB; lsn=0/1BC06E0, redo lsn=0/1BC0688
+2025-02-18 14:06:58.083 CET [16672] LOG:  début du checkpoint : time
+2025-02-18 14:06:58.442 CET [16672] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.334 s, sync=0.005 s, total=0.366 s; sync files=4, longest=0.002 s, average=0.002 s; distance=9 kB, estimate=13 kB; lsn=0/1BC2D98, redo lsn=0/1BC2D40
+2025-02-18 14:11:58.458 CET [16672] LOG:  début du checkpoint : time
+2025-02-18 14:11:58.807 CET [16672] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.327 s, sync=0.004 s, total=0.357 s; sync files=4, longest=0.002 s, average=0.001 s; distance=10 kB, estimate=13 kB; lsn=0/1BC5610, redo lsn=0/1BC55B8
+2025-02-18 14:16:15.729 CET [17036] LOG:  a reçu une demande d'arrêt rapide
+2025-02-18 14:16:15.744 CET [17036] LOG:  annulation des transactions actives
+2025-02-18 14:16:15.745 CET [13752] ERREUR:  annulation de la requête à la demande de l'utilisateur
+2025-02-18 14:16:15.752 CET [13328] FATAL:  arrÃªt des connexions suite Ã  la demande de l'administrateur
+2025-02-18 14:16:15.790 CET [17036] LOG:  processus en tâche de fond « logical replication launcher » (PID 13752) a quitté avec le code de sortie 1
+2025-02-18 14:16:15.798 CET [16672] LOG:  arrêt en cours
+2025-02-18 14:16:15.803 CET [16672] LOG:  début du checkpoint : shutdown immediate
+2025-02-18 14:16:15.851 CET [16672] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.010 s, sync=0.013 s, total=0.052 s; sync files=4, longest=0.006 s, average=0.004 s; distance=10 kB, estimate=12 kB; lsn=0/1BC7FE0, redo lsn=0/1BC7FE0
+2025-02-18 14:16:15.877 CET [17036] LOG:  le système de base de données est arrêté
+2025-02-18 14:47:18.767 CET [16276] LOG:  démarrage de PostgreSQL 17.3 on x86_64-windows, compiled by msvc-19.42.34436, 64-bit
+2025-02-18 14:47:18.775 CET [16276] LOG:  en écoute sur IPv6, adresse « ::1 », port 5432
+2025-02-18 14:47:18.775 CET [16276] LOG:  en écoute sur IPv4, adresse « 127.0.0.1 », port 5432
+2025-02-18 14:47:18.850 CET [12204] LOG:  le système de bases de données a été arrêté à 2025-02-18 14:16:15 CET
+2025-02-18 14:47:18.880 CET [16276] LOG:  le système de bases de données est prêt pour accepter les connexions
+2025-02-18 14:52:18.857 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 14:52:19.228 CET [7436] LOG:  checkpoint complete: wrote 6 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.338 s, sync=0.005 s, total=0.382 s; sync files=5, longest=0.002 s, average=0.001 s; distance=10 kB, estimate=10 kB; lsn=0/1BCABA8, redo lsn=0/1BCAB50
+2025-02-18 14:57:18.265 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 14:57:18.708 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.364 s, sync=0.004 s, total=0.457 s; sync files=4, longest=0.002 s, average=0.001 s; distance=11 kB, estimate=11 kB; lsn=0/1BCD908, redo lsn=0/1BCD8B0
+2025-02-18 15:02:18.732 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 15:02:19.105 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.339 s, sync=0.004 s, total=0.389 s; sync files=4, longest=0.002 s, average=0.001 s; distance=11 kB, estimate=11 kB; lsn=0/1BD0878, redo lsn=0/1BD0820
+2025-02-18 15:07:18.126 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 15:07:18.835 CET [7436] LOG:  checkpoint complete: wrote 7 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.674 s, sync=0.004 s, total=0.717 s; sync files=4, longest=0.002 s, average=0.001 s; distance=13 kB, estimate=13 kB; lsn=0/1BD3CB0, redo lsn=0/1BD3C58
+2025-02-18 15:12:18.850 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 15:12:19.212 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.333 s, sync=0.004 s, total=0.369 s; sync files=4, longest=0.001 s, average=0.001 s; distance=5 kB, estimate=12 kB; lsn=0/1BD52E0, redo lsn=0/1BD5288
+2025-02-18 15:17:18.224 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 15:17:18.926 CET [7436] LOG:  checkpoint complete: wrote 7 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.679 s, sync=0.005 s, total=0.706 s; sync files=6, longest=0.001 s, average=0.001 s; distance=27 kB, estimate=27 kB; lsn=0/1BDC278, redo lsn=0/1BDC1E8
+2025-02-18 15:22:18.944 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 15:22:19.609 CET [7436] LOG:  checkpoint complete: wrote 6 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.576 s, sync=0.022 s, total=0.667 s; sync files=5, longest=0.009 s, average=0.005 s; distance=12 kB, estimate=26 kB; lsn=0/1BDF618, redo lsn=0/1BDF5C0
+2025-02-18 15:27:18.637 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 15:27:19.011 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.336 s, sync=0.005 s, total=0.382 s; sync files=4, longest=0.002 s, average=0.002 s; distance=6 kB, estimate=24 kB; lsn=0/1BE1168, redo lsn=0/1BE1110
+2025-02-18 15:32:18.027 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 15:32:18.386 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.332 s, sync=0.009 s, total=0.364 s; sync files=4, longest=0.007 s, average=0.003 s; distance=7 kB, estimate=22 kB; lsn=0/1BE2E78, redo lsn=0/1BE2E20
+2025-02-18 15:37:18.403 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 15:37:18.770 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.337 s, sync=0.005 s, total=0.374 s; sync files=4, longest=0.003 s, average=0.002 s; distance=7 kB, estimate=21 kB; lsn=0/1BE4D00, redo lsn=0/1BE4CA8
+2025-02-18 15:42:18.789 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 15:42:19.141 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.330 s, sync=0.003 s, total=0.359 s; sync files=4, longest=0.001 s, average=0.001 s; distance=8 kB, estimate=19 kB; lsn=0/1BE6D80, redo lsn=0/1BE6D28
+2025-02-18 15:47:18.165 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 15:47:18.522 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.336 s, sync=0.003 s, total=0.362 s; sync files=4, longest=0.001 s, average=0.001 s; distance=8 kB, estimate=18 kB; lsn=0/1BE8FB0, redo lsn=0/1BE8F58
+2025-02-18 15:52:18.544 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 15:52:18.913 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.337 s, sync=0.009 s, total=0.375 s; sync files=4, longest=0.007 s, average=0.003 s; distance=8 kB, estimate=17 kB; lsn=0/1BEB368, redo lsn=0/1BEB310
+2025-02-18 15:57:18.932 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 15:57:19.306 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.345 s, sync=0.004 s, total=0.383 s; sync files=4, longest=0.002 s, average=0.001 s; distance=9 kB, estimate=16 kB; lsn=0/1BED940, redo lsn=0/1BED8B0
+2025-02-18 16:02:18.327 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 16:02:18.696 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.340 s, sync=0.005 s, total=0.374 s; sync files=4, longest=0.002 s, average=0.002 s; distance=9 kB, estimate=16 kB; lsn=0/1BF0080, redo lsn=0/1BF0028
+2025-02-18 16:07:18.707 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 16:07:19.057 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.333 s, sync=0.003 s, total=0.353 s; sync files=4, longest=0.001 s, average=0.001 s; distance=10 kB, estimate=15 kB; lsn=0/1BF2990, redo lsn=0/1BF2938
+2025-02-18 16:12:18.071 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 16:12:18.439 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.320 s, sync=0.021 s, total=0.375 s; sync files=4, longest=0.006 s, average=0.006 s; distance=10 kB, estimate=15 kB; lsn=0/1BF5498, redo lsn=0/1BF5408
+2025-02-18 16:17:18.457 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 16:17:18.819 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.332 s, sync=0.004 s, total=0.374 s; sync files=4, longest=0.002 s, average=0.001 s; distance=11 kB, estimate=14 kB; lsn=0/1BF80F8, redo lsn=0/1BF80A0
+2025-02-18 16:22:18.832 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 16:22:19.196 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.335 s, sync=0.005 s, total=0.373 s; sync files=4, longest=0.002 s, average=0.002 s; distance=3 kB, estimate=13 kB; lsn=0/1BF8F08, redo lsn=0/1BF8EB0
+2025-02-18 16:27:18.198 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 16:27:18.544 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.312 s, sync=0.003 s, total=0.351 s; sync files=4, longest=0.001 s, average=0.001 s; distance=3 kB, estimate=12 kB; lsn=0/1BF9F00, redo lsn=0/1BF9EA8
+2025-02-18 16:32:18.564 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 16:32:18.907 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.321 s, sync=0.011 s, total=0.348 s; sync files=4, longest=0.007 s, average=0.003 s; distance=4 kB, estimate=11 kB; lsn=0/1BFB0D0, redo lsn=0/1BFB078
+2025-02-18 16:37:18.912 CET [7436] LOG:  début du checkpoint : time
+2025-02-18 16:37:19.257 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.323 s, sync=0.009 s, total=0.345 s; sync files=4, longest=0.006 s, average=0.003 s; distance=4 kB, estimate=11 kB; lsn=0/1BFC450, redo lsn=0/1BFC3F8
+2025-02-18 16:41:07.144 CET [16276] LOG:  a reçu une demande d'arrêt rapide
+2025-02-18 16:41:07.208 CET [16276] LOG:  annulation des transactions actives
+2025-02-18 16:41:07.259 CET [16808] ERREUR:  annulation de la requête à la demande de l'utilisateur
+2025-02-18 16:41:07.327 CET [9952] FATAL:  arrÃªt des connexions suite Ã  la demande de l'administrateur
+2025-02-18 16:41:07.679 CET [16276] LOG:  processus en tâche de fond « logical replication launcher » (PID 16808) a quitté avec le code de sortie 1
+2025-02-18 16:41:07.926 CET [7436] LOG:  arrêt en cours
+2025-02-18 16:41:07.949 CET [7436] LOG:  début du checkpoint : shutdown immediate
+2025-02-18 16:41:08.254 CET [7436] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.121 s, sync=0.008 s, total=0.316 s; sync files=4, longest=0.003 s, average=0.002 s; distance=5 kB, estimate=10 kB; lsn=0/1BFD920, redo lsn=0/1BFD920
+2025-02-18 16:41:08.611 CET [16276] LOG:  le système de base de données est arrêté

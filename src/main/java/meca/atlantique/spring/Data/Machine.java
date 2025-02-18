@@ -10,8 +10,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +26,6 @@ public abstract class Machine {
     private short port;
     private String name;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "machine", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MachineStatus> statusHistory = new ArrayList<>();
 }
