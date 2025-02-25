@@ -85,63 +85,68 @@ public class FanucMachineService {
         List<FanucMachine> machines = repository.findAll();
         List<MachineStatus> machinesStatus = new ArrayList<>();
         machines.forEach(machine -> {
-            short handle = connectFanucMachine(machine.getIp(), machine.getPort());
-            
-            ODBST stats;
-            MachineState state;
-            if (machine.getSerie() == EnumSeries.SERIE_15 || machine.getSerie() == EnumSeries.SERIE_15i) {
-                stats = new ODBST_15();
-                FanucApi.INSTANCE.cnc_statinfo(handle, stats);
+            try {
+                short handle = connectFanucMachine(machine.getIp(), machine.getPort());
+                
+                ODBST stats;
+                MachineState state;
+                if (machine.getSerie() == EnumSeries.SERIE_15 || machine.getSerie() == EnumSeries.SERIE_15i) {
+                    stats = new ODBST_15();
+                    FanucApi.INSTANCE.cnc_statinfo(handle, stats);
 
-                switch(((ODBST_15) stats).run) {
-                    case 0: {
-                        state = MachineState.STOPPED;
-                        break;
+                    switch(((ODBST_15) stats).run) {
+                        case 0: {
+                            state = MachineState.STOPPED;
+                            break;
+                        }
+                        case 1: {
+                            state = MachineState.HOLD;
+                            break;
+                        }
+                        case 2: {
+                            state = MachineState.RUNNING;
+                            break;
+                        }
+                        default: {
+                            state = MachineState.UNKNOWN;
+                        }
                     }
-                    case 1: {
-                        state = MachineState.HOLD;
-                        break;
-                    }
-                    case 2: {
-                        state = MachineState.RUNNING;
-                        break;
-                    }
-                    default: {
-                        state = MachineState.UNKNOWN;
+                } else {
+                    stats = new ODBST_OTHER();
+                    FanucApi.INSTANCE.cnc_statinfo(handle, stats);
+                    
+                    switch(((ODBST_OTHER) stats).run) {
+                        case 1: {
+                            state = MachineState.STOPPED;
+                            break;
+                        }
+                        case 2: {
+                            state = MachineState.HOLD;
+                            break;
+                        }
+                        case 3: {
+                            state = MachineState.RUNNING;
+                            break;
+                        }
+                        case 4: {
+                            state = MachineState.RUNNING;
+                            break;
+                        }
+                        default: {
+                            state = MachineState.UNKNOWN;
+                        }
                     }
                 }
-            } else {
-                stats = new ODBST_OTHER();
-                FanucApi.INSTANCE.cnc_statinfo(handle, stats);
 
-                switch(((ODBST_OTHER) stats).run) {
-                    case 1: {
-                        state = MachineState.STOPPED;
-                        break;
-                    }
-                    case 2: {
-                        state = MachineState.HOLD;
-                        break;
-                    }
-                    case 3: {
-                        state = MachineState.RUNNING;
-                        break;
-                    }
-                    case 4: {
-                        state = MachineState.RUNNING;
-                    }
-                    default: {
-                        state = MachineState.UNKNOWN;
-                    }
-                }
+                MachineStatus status = new MachineStatus();
+                status.setMachine(machine);
+                status.setState(state);
+                machine.getStatusHistory().add(status);
+                
+                machinesStatus.add(status);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
             }
-
-            MachineStatus status = new MachineStatus();
-            status.setMachine(machine);
-            status.setState(state);
-            machine.getStatusHistory().add(status);
-
-            machinesStatus.add(status);
         });
 
         return machinesStatus;

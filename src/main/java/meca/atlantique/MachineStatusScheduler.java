@@ -13,7 +13,7 @@ public class MachineStatusScheduler {
     private final FanucMachineService fanucMachineService;
     private final MachineStatusService machineStatusService;
 
-    @Scheduled(fixedRate = 300_000) // 300000ms = 5 minutes
+    @Scheduled(fixedRate = 60_000) // 60000ms = 1 minute
     public void updateMachineStatus() {
         fanucMachineService.updateFanucMachineStatus().forEach((status) -> machineStatusService.saveMachineStatus(status));
     }
