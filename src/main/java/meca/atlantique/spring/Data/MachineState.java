@@ -4,5 +4,6 @@ public enum MachineState {
     RUNNING,
     STOPPED,
     HOLD,
-    UNKNOWN
+    UNKNOWN,
+    OFFLINE
 }

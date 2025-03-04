@@ -1,9 +1,15 @@
 package meca.atlantique;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
+import meca.atlantique.spring.Data.MachineState;
+import meca.atlantique.spring.Data.MachineStatus;
 import meca.atlantique.spring.Services.FanucMachineService;
 import meca.atlantique.spring.Services.MachineStatusService;
 
@@ -13,8 +19,40 @@ public class MachineStatusScheduler {
     private final FanucMachineService fanucMachineService;
     private final MachineStatusService machineStatusService;
 
-    @Scheduled(fixedRate = 60_000) // 60000ms = 1 minute
+    private final int RATE = 60_000; // 60000ms = 1 minute
+
+    /*
+     * enregistre l'état des machines actuel, 
+     * garde en mémoire seulement l'état courant et lorsque l'état change.
+     * l'état est considéré 'offline' lorsque le dernier état enregistré date d'il y a plus de 2 minutes 
+     * (début d'une journée ou mise en pause du système)
+     */
+    @Scheduled(fixedRate = RATE)
     public void updateMachineStatus() {
-        fanucMachineService.updateFanucMachineStatus().forEach((status) -> machineStatusService.saveMachineStatus(status));
+        fanucMachineService.updateFanucMachineStatus().forEach((status) -> {
+            List<MachineStatus> list = machineStatusService.getHistoryForDate(status.getMachine().getIp(), LocalDate.now());
+            if (list.size() >= 2) {
+                MachineStatus lastElement = list.get(list.size()-1);
+                MachineStatus beforeLastElement = list.get(list.size()-2);
+                LocalDateTime twoMinutesAgo = LocalDateTime.now().minusMinutes(2);
+                
+                // supprime le dernier état s'il est plus recent que 2 minutes,
+                // et est le même que l'avant dernier
+                // (si l'avant dernier est différent ça veut dire que le dernier notifie un changement d'état) 
+                if (lastElement.getTimestamp().isAfter(twoMinutesAgo)) {
+                    if (beforeLastElement.getState() == lastElement.getState()) {
+                        list.remove(lastElement);
+                        machineStatusService.deleteMachineStatus(lastElement);
+                    }
+                } else {
+                    // remplace le dernier état sauvegardé en offline
+                    lastElement.setState(MachineState.OFFLINE);
+                    machineStatusService.saveMachineStatus(lastElement);
+                }
+            }
+            
+            list.add(status);
+            machineStatusService.saveMachineStatus(status);
+        });
     }
 }

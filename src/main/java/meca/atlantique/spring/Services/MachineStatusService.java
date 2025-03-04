@@ -20,6 +20,11 @@ public class MachineStatusService {
         machineStatusRepository.save(status);
     }
 
+    public void deleteMachineStatus(MachineStatus status) {
+        machineStatusRepository.deleteById(status.getId());
+        machineStatusRepository.flush();
+    }
+
     public List<MachineStatus> getHistoryForDate(String machineIp, LocalDate date) {
         return machineStatusRepository.findByMachineIpAndDate(machineIp, date);
     }

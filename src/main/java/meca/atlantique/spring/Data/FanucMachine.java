@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "fanucMachine")
 public class FanucMachine extends Machine {
+    private String serialNumber;
+    
     @Enumerated(EnumType.STRING)
     private EnumSeries serie;
 

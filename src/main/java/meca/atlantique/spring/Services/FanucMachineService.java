@@ -1,5 +1,6 @@
 package meca.atlantique.spring.Services;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import com.sun.jna.ptr.ShortByReference;
 
 import lombok.AllArgsConstructor;
 import meca.atlantique.fanuc.FanucApi;
+import meca.atlantique.fanuc.FanucApi.ODBEXEPRG;
 import meca.atlantique.fanuc.FanucApi.ODBST;
 import meca.atlantique.fanuc.FanucApi.ODBST_15;
 import meca.atlantique.fanuc.FanucApi.ODBST_OTHER;
@@ -138,10 +140,14 @@ public class FanucMachineService {
                     }
                 }
 
+                ODBEXEPRG exeprg = new ODBEXEPRG();
+                FanucApi.INSTANCE.cnc_exeprgname(handle, exeprg);
+                String programName = new String(exeprg.name, StandardCharsets.UTF_8).trim().replace("\u0000", "");
+
                 MachineStatus status = new MachineStatus();
                 status.setMachine(machine);
                 status.setState(state);
-                machine.getStatusHistory().add(status);
+                status.setProgramName(programName);
                 
                 machinesStatus.add(status);
             } catch (Exception e) {

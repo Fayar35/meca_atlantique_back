@@ -12,6 +12,6 @@ import meca.atlantique.spring.Data.MachineStatus;
 public interface MachineStatusRepository extends JpaRepository<MachineStatus, Long> {
     List<MachineStatus> findByMachineIpOrderByTimestampDesc(String machineIp);
     
-    @Query("SELECT ms FROM MachineStatus ms WHERE ms.machine.ip = :machineIp AND DATE(ms.timestamp) = :date")
+    @Query("SELECT ms FROM MachineStatus ms WHERE ms.machine.ip = :machineIp AND DATE(ms.timestamp) = :date ORDER BY ms.timestamp")
     List<MachineStatus> findByMachineIpAndDate(@Param("machineIp") String machineIp, @Param("date") LocalDate date);
 }
