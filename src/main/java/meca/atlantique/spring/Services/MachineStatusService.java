@@ -1,12 +1,15 @@
 package meca.atlantique.spring.Services;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
+import meca.atlantique.fanuc.FanucMachineService;
+import meca.atlantique.heidenhain.HeidenhainMachineService;
 import meca.atlantique.spring.Data.MachineStatus;
 import meca.atlantique.spring.Repositories.MachineStatusRepository;
 
@@ -15,6 +18,8 @@ import meca.atlantique.spring.Repositories.MachineStatusRepository;
 @Transactional
 public class MachineStatusService {
     private final MachineStatusRepository machineStatusRepository;
+    private final FanucMachineService fanucMachineService;
+    private final HeidenhainMachineService heidenhainMachineService;
 
     public void saveMachineStatus(MachineStatus status) {
         machineStatusRepository.save(status);
@@ -25,11 +30,22 @@ public class MachineStatusService {
         machineStatusRepository.flush();
     }
 
+    public void deleteBefore(LocalDateTime timestamp) {
+        machineStatusRepository.deleteByTimestampBefore(timestamp);
+    }
+
     public List<MachineStatus> getHistoryForDate(String machineIp, LocalDate date) {
         return machineStatusRepository.findByMachineIpAndDate(machineIp, date);
     }
 
     public List<MachineStatus> getMachineHistory(String machineIp) {
         return machineStatusRepository.findByMachineIpOrderByTimestampDesc(machineIp);
+    }
+
+    public List<MachineStatus> updateMachineStatus() {
+        List<MachineStatus> ret = fanucMachineService.updateFanucMachineStatus(); 
+        ret.addAll(heidenhainMachineService.updateHeidenhainMachineStatus());
+
+        return ret;
     }
 }

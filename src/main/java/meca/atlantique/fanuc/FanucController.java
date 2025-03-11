@@ -1,4 +1,4 @@
-package meca.atlantique.spring.Controllers;
+package meca.atlantique.fanuc;
 
 import java.util.Optional;
 
@@ -7,13 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
-import meca.atlantique.spring.Data.FanucMachine;
-import meca.atlantique.spring.Services.FanucMachineService;
 
 @RestController
 @RequestMapping("/fanuc")
@@ -24,15 +23,15 @@ public class FanucController {
     @Autowired
     private final FanucMachineService fanucMachineService;
 
-    @GetMapping("/getMachine")
-    ResponseEntity<?> getFanucMachine(@RequestParam String ip, @RequestParam("port") Optional<Short> portOptional) {
+    @PostMapping("/createMachine")
+    ResponseEntity<?> createFanucMachine(@RequestParam String ip, @RequestParam String name, @RequestParam("port") Optional<Short> portOptional) {
         try {
             if (fanucMachineService.has(ip)) {
-                return ResponseEntity.ok(fanucMachineService.getByIp(ip));
+                return ResponseEntity.badRequest().body("La machine avec l'ip : " + ip + " existe déjà");
             }
             
             short port = portOptional.orElse(fanucMachineService.DEFAULT_PORT);
-            FanucMachine machine = fanucMachineService.collectFanucMachine(ip, port);
+            FanucMachine machine = fanucMachineService.collectFanucMachine(ip, name, port);
             fanucMachineService.add(machine);
             
             return ResponseEntity.ok(machine);

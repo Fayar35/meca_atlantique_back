@@ -2,7 +2,7 @@ package meca.atlantique.spring.Controllers;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -15,23 +15,38 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 import meca.atlantique.spring.Data.Machine;
 import meca.atlantique.spring.Data.MachineStatus;
-import meca.atlantique.spring.Services.FanucMachineService;
+import meca.atlantique.spring.Data.SummaryStatus;
+import meca.atlantique.spring.Services.MachineService;
 import meca.atlantique.spring.Services.MachineStatusService;
+import meca.atlantique.spring.Services.SummaryStatusService;
 
 @RestController
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:5173") // autorise react
 public class MainController {
-    private final FanucMachineService fanucMachineService;
     private final MachineStatusService machineStatusService;
+    private final SummaryStatusService summaryStatusService;
+    private final MachineService machineService;
 
     @GetMapping("/getAllMachine")
     ResponseEntity<?> getAllMachine() {
         try {
-            List<Machine> ret = fanucMachineService.getAll().stream().map(m -> (Machine) m).collect(Collectors.toList());
+            List<Machine> ret = machineService.getAll();
             return ResponseEntity.ok(ret);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la récuperation des machines " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la récuperation des machines : " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/getMachine")
+    ResponseEntity<?> getMachine(@RequestParam String ip) {
+        try {
+            if (machineService.has(ip)) {
+                return ResponseEntity.ok(machineService.getByIp(ip));
+            }
+            return ResponseEntity.badRequest().body("Aucune machine avec l'ip : " + ip + " n'a été trouvée");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erreur lors de la récuperation des machines : " + e.getMessage());
         }
     }
 
@@ -42,7 +57,7 @@ public class MainController {
         try {
             return ResponseEntity.ok(machineStatusService.getHistoryForDate(ip, date));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la récuperation de l'historique " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la récuperation de l'historique : " + e.getMessage());
         }
     }
 
@@ -55,5 +70,29 @@ public class MainController {
     MachineStatus test() {
         MachineStatus history = new MachineStatus();
         return history;
+    }
+
+    @GetMapping("/getMachineSummary")
+    ResponseEntity<?> getMachineSummary(
+            @RequestParam String ip, 
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        try {
+            Optional<SummaryStatus> sumOptional = summaryStatusService.getSummaryStatus(ip, date);
+            SummaryStatus sum;
+            if (!sumOptional.isPresent()) {
+                sum = summaryStatusService.createSummaryStatus(ip, date);
+                summaryStatusService.save(sum);
+            } else if(date.isEqual(LocalDate.now()) && sumOptional.isPresent()) {
+                sum = summaryStatusService.createSummaryStatus(ip, date);
+                summaryStatusService.save(sum);
+                summaryStatusService.deleteSummaryStatus(sumOptional.get());
+            } else {                
+                sum = sumOptional.get();
+            }
+
+            return ResponseEntity.ok(sum);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la récuperation du résumé : " + e.getMessage());
+        }
     }
 }

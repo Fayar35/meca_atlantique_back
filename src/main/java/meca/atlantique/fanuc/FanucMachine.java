@@ -1,4 +1,4 @@
-package meca.atlantique.spring.Data;
+package meca.atlantique.fanuc;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,6 +8,8 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import meca.atlantique.spring.Data.EnumSeries;
+import meca.atlantique.spring.Data.Machine;
 
 @Entity
 @Data
@@ -20,11 +22,12 @@ public class FanucMachine extends Machine {
     @Enumerated(EnumType.STRING)
     private EnumSeries serie;
 
-    public FanucMachine(String ip, short port, String name, EnumSeries serie) {
+    public FanucMachine(String ip, short port, String name, EnumSeries serie, String serialNumber) {
         this.setIp(ip);
         this.setPort(port);
         this.setName(name);
         this.setSerie(serie);
+        this.setSerialNumber(serialNumber);
     }
 
     public static EnumSeries getEnumSeriesFromSysInfos(byte[] cncType, short addinfo) {
@@ -61,7 +64,7 @@ public class FanucMachine extends Machine {
             case "PD": return EnumSeries.POWER_MATE_ID;
             case "PH": return EnumSeries.POWER_MATE_IH;
             case "PM": return EnumSeries.POWER_MOTION_I;
-            default: return null;
+            default: return EnumSeries.SERIE_16;
         }
     }
 }

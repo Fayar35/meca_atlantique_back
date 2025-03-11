@@ -1,0 +1,118 @@
+package meca.atlantique.heidenhain;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import lombok.AllArgsConstructor;
+import meca.atlantique.spring.Data.MachineState;
+import meca.atlantique.spring.Data.MachineStatus;
+
+@Service
+@Transactional
+@AllArgsConstructor
+public class HeidenhainMachineService {
+    final short DEFAULT_PORT = 19000;
+
+    @Autowired
+    private final HeidenhainMachineRepository repository;
+
+    public List<HeidenhainMachine> getAll() {
+        return repository.findAll();
+    }
+
+    public HeidenhainMachine getByIp(String ip) {
+        return repository.findByIp(ip).orElse(null);
+    }
+
+    public HeidenhainMachine add(HeidenhainMachine machine) {
+        return repository.save(machine);
+    }
+
+    public boolean has(String ip) {
+        return repository.existsById(ip);
+    }
+
+    public void removeByIp(String ip) {
+        repository.deleteByIp(ip);
+    }
+
+    public List<MachineStatus> updateHeidenhainMachineStatus() {
+        List<HeidenhainMachine> machines = repository.findAll();
+        List<MachineStatus> machinesStatus = new ArrayList<>();
+        machines.forEach(machine -> {
+            short prg_status = HeidenhainApi.getPyStatus(machine.getIp());
+
+            MachineState state;
+            switch (prg_status) {
+                case -1: {
+                    // erreur de récupération de l'état
+                    state = MachineState.OFFLINE;
+                    break;
+                }
+                case 0: {
+                    // Started
+                    state = MachineState.RUNNING;
+                    break;
+                }
+                case 1: {
+                    // Stopped
+                    state = MachineState.STOPPED;
+                    break;
+                }
+                case 2: {
+                    // Finished
+                    state = MachineState.HOLD;
+                    break;
+                }
+                case 3: {
+                    // Cancelled
+                    state = MachineState.STOPPED;
+                    break;
+                }
+                case 4: {
+                    // Interrupted
+                    state = MachineState.STOPPED;
+                    break;
+                }
+                case 5: {
+                    // Error
+                    state = MachineState.STOPPED;
+                    break;
+                }
+                case 6: {
+                    // Error Cleared
+                    state = MachineState.HOLD;
+                    break;
+                }
+                case 7: {
+                    // Idle
+                    state = MachineState.HOLD;
+                    break;
+                }
+                case 8: {
+                    // Undefined
+                    state = MachineState.UNKNOWN;
+                    break;
+                }
+                default: {
+                    state = MachineState.UNKNOWN;
+                }
+            }
+
+            String programName = HeidenhainApi.getPyPrgName(machine.getIp());
+
+            MachineStatus status = new MachineStatus();
+            status.setMachine(machine);
+            status.setState(state);
+            status.setProgramName(programName.replace("\u0000", ""));
+
+            machinesStatus.add(status);
+        });
+        return machinesStatus;
+    }
+}

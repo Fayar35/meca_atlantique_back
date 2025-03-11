@@ -10,13 +10,11 @@ import org.springframework.stereotype.Component;
 import lombok.AllArgsConstructor;
 import meca.atlantique.spring.Data.MachineState;
 import meca.atlantique.spring.Data.MachineStatus;
-import meca.atlantique.spring.Services.FanucMachineService;
 import meca.atlantique.spring.Services.MachineStatusService;
 
 @Component
 @AllArgsConstructor
 public class MachineStatusScheduler {
-    private final FanucMachineService fanucMachineService;
     private final MachineStatusService machineStatusService;
 
     private final int RATE = 60_000; // 60000ms = 1 minute
@@ -29,7 +27,7 @@ public class MachineStatusScheduler {
      */
     @Scheduled(fixedRate = RATE)
     public void updateMachineStatus() {
-        fanucMachineService.updateFanucMachineStatus().forEach((status) -> {
+        machineStatusService.updateMachineStatus().forEach((status) -> {
             List<MachineStatus> list = machineStatusService.getHistoryForDate(status.getMachine().getIp(), LocalDate.now());
             if (list.size() >= 2) {
                 MachineStatus lastElement = list.get(list.size()-1);
@@ -54,5 +52,13 @@ public class MachineStatusScheduler {
             list.add(status);
             machineStatusService.saveMachineStatus(status);
         });
+    }
+
+    // s'éxecute tout les jours à 8H 
+    // pour supprimer les machines status vieux de plus de 14 jours
+    @Scheduled(cron="0 0 8 * * ?")
+    public void deleteOldHistory() {
+        LocalDateTime fourteenDaysAgo = LocalDateTime.now().minusDays(14);
+        machineStatusService.deleteBefore(fourteenDaysAgo);
     }
 }

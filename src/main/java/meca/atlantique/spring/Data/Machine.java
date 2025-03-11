@@ -31,4 +31,8 @@ public abstract class Machine {
     @JsonIgnore
     @OneToMany(mappedBy = "machine", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MachineStatus> statusHistory = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "machine", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SummaryStatus> summaryStatus = new ArrayList<>();
 }

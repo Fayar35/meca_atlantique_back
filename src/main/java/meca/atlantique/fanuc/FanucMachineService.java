@@ -1,4 +1,4 @@
-package meca.atlantique.spring.Services;
+package meca.atlantique.fanuc;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -14,17 +14,14 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.ptr.ShortByReference;
 
 import lombok.AllArgsConstructor;
-import meca.atlantique.fanuc.FanucApi;
 import meca.atlantique.fanuc.FanucApi.ODBEXEPRG;
 import meca.atlantique.fanuc.FanucApi.ODBST;
 import meca.atlantique.fanuc.FanucApi.ODBST_15;
 import meca.atlantique.fanuc.FanucApi.ODBST_OTHER;
 import meca.atlantique.fanuc.FanucApi.ODBSYS;
 import meca.atlantique.spring.Data.EnumSeries;
-import meca.atlantique.spring.Data.FanucMachine;
 import meca.atlantique.spring.Data.MachineState;
 import meca.atlantique.spring.Data.MachineStatus;
-import meca.atlantique.spring.Repositories.FanucMachineRepository;
 
 @Service
 @Transactional
@@ -56,13 +53,13 @@ public class FanucMachineService {
         repository.deleteByIp(ip);
     }
 
-    public FanucMachine collectFanucMachine(String ip, short port) {
+    public FanucMachine collectFanucMachine(String ip, String name, short port) {
         short handle = connectFanucMachine(ip, port);
         
         ODBSYS info_system = new ODBSYS();
         FanucApi.INSTANCE.cnc_sysinfo(handle, info_system);
 
-        String name = "Series " + 
+        String serialNumber = "Series " + 
             new String(info_system.cnc_type).trim() + 
             ((info_system.addinfo & 0x70) != 0 ? "i" : "") + "-" +
             new String(info_system.mt_type).trim() + " (" +
@@ -71,7 +68,7 @@ public class FanucMachineService {
 
         EnumSeries serie = FanucMachine.getEnumSeriesFromSysInfos(info_system.cnc_type, info_system.addinfo);
 
-        return new FanucMachine(ip, port, name, serie);
+        return new FanucMachine(ip, port, name, serie, serialNumber);
     }
 
     public short connectFanucMachine(String ip, short port) {
