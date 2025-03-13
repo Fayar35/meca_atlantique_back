@@ -64,7 +64,7 @@ public class FanucMachine extends Machine {
             case "PD": return EnumSeries.POWER_MATE_ID;
             case "PH": return EnumSeries.POWER_MATE_IH;
             case "PM": return EnumSeries.POWER_MOTION_I;
-            default: return EnumSeries.SERIE_16;
+            default: return EnumSeries.SERIE_16; // should not happens
         }
     }
 }

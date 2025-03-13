@@ -93,16 +93,21 @@ public class FanucMachineService {
                     stats = new ODBST_15();
                     FanucApi.INSTANCE.cnc_statinfo(handle, stats);
 
+                    // status code définis ici :
+                    // https://www.inventcom.net/fanuc-focas-library/Misc/cnc_statinfo
                     switch(((ODBST_15) stats).run) {
                         case 0: {
+                            // STOP
                             state = MachineState.STOPPED;
                             break;
                         }
                         case 1: {
+                            // HOLD
                             state = MachineState.HOLD;
                             break;
                         }
                         case 2: {
+                            // STaRT
                             state = MachineState.RUNNING;
                             break;
                         }
@@ -116,18 +121,22 @@ public class FanucMachineService {
                     
                     switch(((ODBST_OTHER) stats).run) {
                         case 1: {
+                            // STOP
                             state = MachineState.STOPPED;
                             break;
                         }
                         case 2: {
+                            // HOLD
                             state = MachineState.HOLD;
                             break;
                         }
                         case 3: {
+                            // STaRT
                             state = MachineState.RUNNING;
                             break;
                         }
                         case 4: {
+                            // MSTR (during retraction and re-positioning of tool retraction and recovery, and operation of JOG MDI)
                             state = MachineState.RUNNING;
                             break;
                         }
