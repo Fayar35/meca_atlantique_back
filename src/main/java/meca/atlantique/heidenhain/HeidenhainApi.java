@@ -16,12 +16,13 @@ public class HeidenhainApi {
             if (line == null) {
                 return -1;
             }
-            short ret = Short.parseShort(line);
-
+            
             // si le script python retourne une erreur, il y a une deuxième ligne
             if (reader.readLine() != null) {
                 return -1;
             }
+            
+            short ret = Short.parseShort(line);
             p.waitFor();
 
             return ret;

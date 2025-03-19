@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -93,6 +94,20 @@ public class MainController {
             return ResponseEntity.ok(sum);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la récuperation du résumé : " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/deleteMachine")
+    ResponseEntity<?> deleteMachine(@RequestParam String ip) {
+        try {
+            if (machineService.has(ip)) {
+                machineService.removeByIp(ip);
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.badRequest().body("Aucune machine ne possède cette ip " + ip);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la suppression de la machine : " + e.getMessage());
         }
     }
 }
