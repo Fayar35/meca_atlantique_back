@@ -5,7 +5,6 @@ import pyLSV2
 import argparse
 import sys, os
 import serial
-import serial.tools.list_ports
 
 PORT_CNC = 19000  # Port par défaut pour LSV/2
 CURRENT_PRG = 24
@@ -23,13 +22,13 @@ class HiddenPrints:
         sys.stderr = self._original_stdout
 
 def get_status(ip):
-    with HiddenPrints():
+    # with HiddenPrints():
         # Création de l'instance LSV2
-        client = pyLSV2.LSV2(ip, timeout=2, port=PORT_CNC)
-        client.connect()
-        ret = client.program_status()-1
-        client.disconnect()
-        return ret
+    client = pyLSV2.LSV2(ip, timeout=2, port=PORT_CNC)
+    client.connect()
+    ret = client.program_status()-1
+    client.disconnect()
+    return ret
     
 def get_prg_name(ip):
     with HiddenPrints():
@@ -44,9 +43,8 @@ def get_prg_name(ip):
         return ret
 
 def test(ip):
-    print([port.device for port in serial.tools.list_ports.comports()])
     serial_connection = serial.Serial(
-        port="COM3",          # Port série
+        port="COM3",        # Port série
         baudrate=9600,      # Vitesse de transmission (à adapter selon votre machine)
         bytesize=8,         # Taille des données
         parity='N',         # Parité (None)

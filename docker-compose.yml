@@ -1,0 +1,25 @@
+services:
+  db:
+    image: 'postgres:13.1-alpine'
+    restart: always
+    container_name: db
+    environment:
+      - POSTGRES_USER=meca_bdd
+      - POSTGRES_PASSWORD=meca_password
+      - TZ="Europe/Paris"
+
+  app:
+    image: 'back'
+    build: 
+      context: .
+    restart: always
+    container_name: app
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/meca_bdd
+      - SPRING_DATASOURCE_USERNAME=meca_bdd
+      - SPRING_DATASOURCE_PASSWORD=meca_password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - "8080:8080"

@@ -8,7 +8,7 @@ public class HeidenhainApi {
 
     public static short getPyStatus(String ip) {
         try {
-            ProcessBuilder pb = new ProcessBuilder("python", FILE_PATH, "get_status", ip);
+            ProcessBuilder pb = new ProcessBuilder("python3", FILE_PATH, "get_status", ip);
             Process p = pb.start();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -34,7 +34,7 @@ public class HeidenhainApi {
 
     public static String getPyPrgName(String ip) {
         try {
-            ProcessBuilder pb = new ProcessBuilder("python", FILE_PATH, "get_prg_name", ip);
+            ProcessBuilder pb = new ProcessBuilder("python3", FILE_PATH, "get_prg_name", ip);
             Process p = pb.start();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
