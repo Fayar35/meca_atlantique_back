@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/heidenhain")
-@CrossOrigin(origins = "http://localhost:5173") // autorise react
+@CrossOrigin(origins = "http://192.168.0.23:5173") // autorise react
 @AllArgsConstructor
 public class HeidenhainController {
     

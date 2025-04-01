@@ -48,6 +48,7 @@ public class HeidenhainMachineService {
             short prg_status = HeidenhainApi.getPyStatus(machine.getIp());
 
             MachineState state;
+            // https://pylsv2.readthedocs.io/en/master/protocol.html#machine-state
             switch (prg_status) {
                 case -1: {
                     // erreur de récupération de l'état

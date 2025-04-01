@@ -23,7 +23,7 @@ import meca.atlantique.spring.Services.SummaryStatusService;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173") // autorise react
+@CrossOrigin(origins = "http://192.168.0.23:5173") // autorise react
 public class MainController {
     private final MachineStatusService machineStatusService;
     private final SummaryStatusService summaryStatusService;

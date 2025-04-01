@@ -1,0 +1,55 @@
+BEGIN TMAT   .TAB 
+#STRUCTBEGIN
+   NAME = NAME
+     TYPE = C
+     WIDTH = 12
+     DEC = 0
+     DIA-ENGLISH = Cutting material?
+     DIA-GERMAN = Schneidstoff?
+     DIA-CZECH = JMENO ?
+     DIA-FRENCH = NOM ?
+     DIA-ITALIAN = NOME ?
+     DIA-SPANISH = ¿Nombre?
+     DIA-PORTUGUE = NOME ?
+     DIA-SWEDISH = NAMN ?
+     DIA-DANISH = NIMI ?
+     DIA-FINNISH = NIMI ?
+     DIA-DUTCH = NAAM ?
+     DIA-POLISH = NAZWA ?
+     DIA-HUNGARIA = NEVE ?
+   NAME = DOC
+     TYPE = C
+     WIDTH = 20
+     DEC = 0
+     DIA-ENGLISH = Comment?
+     DIA-GERMAN = Kommentar?
+     DIA-CZECH = KOMENTAR ?
+     DIA-FRENCH = COMMENTAIRE ?
+     DIA-ITALIAN = COMMENTO ?
+     DIA-SPANISH = ¿Comentario?
+     DIA-PORTUGUE = COMENTARIO ?
+     DIA-SWEDISH = KOMMENTAR ?
+     DIA-DANISH = KOMMENTAR ?
+     DIA-FINNISH = TULKKI ?
+     DIA-DUTCH = COMMENTAAR ?
+     DIA-POLISH = KOMENTARZ ?
+     DIA-HUNGARIA = MEGJEGYZES ?
+#STRUCTEND
+NR      NAME         DOC
+0       HC-K15       HM beschichtet       
+1       HC-P25       HM beschichtet       
+2       HC-P35       HM beschichtet       
+3       HSS                               
+4       HSSE-Co5     HSS + Kobalt         
+5       HSSE-Co8     HSS + Kobalt         
+6       HSSE-Co8-TiN HSS + Kobalt         
+7       HSSE/TiCN    TiCN-beschichtet     
+8       HSSE/TiN     TiN-beschichtet      
+9       HT-P15       Cermet               
+10      HT-M15       Cermet               
+11      HW-K15       HM unbeschichtet     
+12      HW-K25       HM unbeschichtet     
+13      HW-P25       HM unbeschichtet     
+14      HW-P35       HM unbeschichtet     
+15      Hartmetall   Vollhartmetall       
+[END]
