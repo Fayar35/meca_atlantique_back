@@ -112,7 +112,8 @@ public class FanucMachineService {
                             break;
                         }
                         default: {
-                            state = MachineState.UNKNOWN;
+                            System.out.println("Fanuc status inconnu : " + ((ODBST_15) stats).run);
+                            state = MachineState.STOPPED;
                         }
                     }
                 } else {
@@ -120,6 +121,11 @@ public class FanucMachineService {
                     FanucApi.INSTANCE.cnc_statinfo(handle, stats);
                     
                     switch(((ODBST_OTHER) stats).run) {
+                        case 0: {
+                            // ****(reset)
+                            state = MachineState.UNKNOWN;
+                            break;
+                        }
                         case 1: {
                             // STOP
                             state = MachineState.STOPPED;
@@ -141,7 +147,8 @@ public class FanucMachineService {
                             break;
                         }
                         default: {
-                            state = MachineState.UNKNOWN;
+                            System.out.println("Fanuc status inconnu : " + ((ODBST_OTHER) stats).run);
+                            state = MachineState.STOPPED;
                         }
                     }
                 }

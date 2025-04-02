@@ -45,11 +45,11 @@ public class HeidenhainMachineService {
         List<HeidenhainMachine> machines = repository.findAll();
         List<MachineStatus> machinesStatus = new ArrayList<>();
         machines.forEach(machine -> {
-            short prg_status = HeidenhainApi.getPyStatus(machine.getIp());
+            short prgStatus = HeidenhainApi.getPyStatus(machine.getIp());
 
             MachineState state;
             // https://pylsv2.readthedocs.io/en/master/protocol.html#machine-state
-            switch (prg_status) {
+            switch (prgStatus) {
                 case -1: {
                     // erreur de récupération de l'état
                     state = MachineState.OFFLINE;
@@ -101,7 +101,8 @@ public class HeidenhainMachineService {
                     break;
                 }
                 default: {
-                    state = MachineState.UNKNOWN;
+                    System.out.println("Heidenhain status inconnu : " + prgStatus);
+                    state = MachineState.STOPPED;
                 }
             }
 

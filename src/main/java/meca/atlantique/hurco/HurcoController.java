@@ -1,4 +1,4 @@
-package meca.atlantique.heidenhain;
+package meca.atlantique.hurco;
 
 import java.util.Optional;
 
@@ -14,29 +14,29 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/heidenhain")
+@RequestMapping("/hurco")
 @CrossOrigin(origins = "http://192.168.0.23:5173") // autorise react
 @AllArgsConstructor
-public class HeidenhainController {
-    
+public class HurcoController {
+
     @Autowired
-    private final HeidenhainMachineService heidenhainMachineService;
+    private final HurcoMachineService hurcoMachineService;
 
     @PostMapping("/createMachine")
-    ResponseEntity<?> createHeidenhainMachine(@RequestParam String ip, @RequestParam String name, @RequestParam("port") Optional<Short> portOptional) {
+    ResponseEntity<?> createHurcoMachine(@RequestParam String ip, @RequestParam String name, @RequestParam("port") Optional<Short> portOptional) {
         try {
-            if (heidenhainMachineService.has(ip)) {
+            if (hurcoMachineService.has(ip)) {
                 return ResponseEntity.badRequest().body("La machine avec l'ip : " + ip + " existe déjà");
             }
-            
-            short port = portOptional.orElse(heidenhainMachineService.DEFAULT_PORT);
-            HeidenhainMachine machine = new HeidenhainMachine(ip, port, name);
-            heidenhainMachineService.add(machine);
-            
+
+            short port = portOptional.orElse(hurcoMachineService.DEFAULT_PORT);
+            HurcoMachine machine = new HurcoMachine(ip, port, name);
+            hurcoMachineService.add(machine);
+
             return ResponseEntity.ok(machine);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Erreur lors de la récuperation de la machine heidenhain " + ip + " : " + e.getMessage());
+                    .body("Erreur lors de la récuperation de la machine hurco " + ip + " : " + e.getMessage());
         }
     }
 }

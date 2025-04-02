@@ -3,15 +3,16 @@ import re
 
 DEFAULT_PORT_FANUC = "8193"
 DEFAULT_PORT_HEIDENHAIN = "19000"
+DEFAULT_PORT_HURCO = "5000"
 URL = "http://localhost:8080"
 
 def ajouter_machine():
     # 1.fanuc 2.heidenhain
-    print("Entrez le chiffre correspondant à la marque de la machine : 1.Fanuc 2.Heidenhain")
+    print("Entrez le chiffre correspondant à la marque de la machine : 1.Fanuc 2.Heidenhain 3.Hurco")
     marque = input()
     if (marque == "q"): return
-    while (marque != "1" and marque != "2"):
-        print("Entrez un chiffre entre 1 et 2")
+    while (marque != "1" and marque != "2" and marque != "3"):
+        print("Entrez un chiffre entre 1 et 3")
         marque = input()
         if (marque == "q"): return
 
@@ -25,7 +26,7 @@ def ajouter_machine():
         if (ip == "q"): return
 
     # port
-    default_port = DEFAULT_PORT_FANUC if marque == "1" else DEFAULT_PORT_HEIDENHAIN
+    default_port = DEFAULT_PORT_FANUC if marque == "1" else (DEFAULT_PORT_HEIDENHAIN if marque == "2" else DEFAULT_PORT_HURCO)
     print("Sélectionnez le port de la machine : touche entrée pour la valeur par défaut (", default_port, ")")
     port = input()
     if (port == "q"): return
@@ -42,7 +43,7 @@ def ajouter_machine():
     print("Sélectionnez le nom de la machine :")
     nom = input()
 
-    table = "fanuc" if marque == "1" else "heidenhain"
+    table = "fanuc" if marque == "1" else ("heidenhain" if marque == "2" else "hurco")
 
     # résumé
     print(f"Inserer {nom} {ip}:{port} dans la table {table} ? [o/n]")

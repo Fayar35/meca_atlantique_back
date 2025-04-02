@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import meca.atlantique.fanuc.FanucMachineService;
 import meca.atlantique.heidenhain.HeidenhainMachineService;
+import meca.atlantique.hurco.HurcoMachineService;
 import meca.atlantique.spring.Data.MachineStatus;
 import meca.atlantique.spring.Repositories.MachineStatusRepository;
 
@@ -20,6 +21,7 @@ public class MachineStatusService {
     private final MachineStatusRepository machineStatusRepository;
     private final FanucMachineService fanucMachineService;
     private final HeidenhainMachineService heidenhainMachineService;
+    private final HurcoMachineService hurcoMachineService;
 
     public void saveMachineStatus(MachineStatus status) {
         machineStatusRepository.save(status);
@@ -45,6 +47,7 @@ public class MachineStatusService {
     public List<MachineStatus> updateMachineStatus() {
         List<MachineStatus> ret = fanucMachineService.updateFanucMachineStatus(); 
         ret.addAll(heidenhainMachineService.updateHeidenhainMachineStatus());
+        ret.addAll(hurcoMachineService.updateHurcoMachineStatus());
 
         return ret;
     }

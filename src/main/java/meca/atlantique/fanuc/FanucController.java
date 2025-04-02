@@ -49,15 +49,4 @@ public class FanucController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la récuperation des machines fanuc " + e.getMessage());
         }
     }
-
-    @GetMapping("/removeMachine")
-    ResponseEntity<?> removeFanucMachine(@RequestParam String ip) {
-        try {
-            fanucMachineService.removeByIp(ip);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Erreur lors de la suppression de la machine fanuc " + ip + " : " + e.getMessage());
-        }
-    }
 }
