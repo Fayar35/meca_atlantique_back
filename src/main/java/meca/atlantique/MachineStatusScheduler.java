@@ -17,15 +17,13 @@ import meca.atlantique.spring.Services.MachineStatusService;
 public class MachineStatusScheduler {
     private final MachineStatusService machineStatusService;
 
-    private final int RATE = 60_000; // 60000ms = 1 minute
-
     /*
      * enregistre l'état des machines actuel, 
      * garde en mémoire seulement l'état courant et lorsque l'état change.
      * l'état est considéré 'offline' lorsque le dernier état enregistré date d'il y a plus de 2 minutes 
      * (début d'une journée ou mise en pause du système)
      */
-    @Scheduled(fixedRate = RATE)
+    @Scheduled(cron = "0 * 4-23 * * *")
     public void updateMachineStatus() {
         machineStatusService.updateMachineStatus().forEach((status) -> {
             List<MachineStatus> list = machineStatusService.getHistoryForDate(status.getMachine().getIp(), LocalDate.now());
