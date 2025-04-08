@@ -12,7 +12,6 @@ import meca.atlantique.spring.Data.MachineState;
 import meca.atlantique.spring.Data.MachineStatus;
 
 @Service
-@Transactional
 @AllArgsConstructor
 public class HurcoMachineService {
     public final short DEFAULT_PORT = 5000;
@@ -20,14 +19,17 @@ public class HurcoMachineService {
     @Autowired
     private final HurcoMachineRepository repository;
 
+    @Transactional
     public List<HurcoMachine> getAll() {
         return repository.findAll();
     }
 
+    @Transactional
     public HurcoMachine add(HurcoMachine machine) {
         return repository.save(machine);
     }
 
+    @Transactional
     public boolean has(String ip) {
         return repository.existsById(ip);
     }
@@ -46,6 +48,14 @@ public class HurcoMachineService {
                 }
                 case "PROGRAM_COMPLETED": {
                     state = MachineState.HOLD;
+                    break;
+                }
+                case "READY": {
+                    state = MachineState.HOLD;
+                    break;
+                }
+                case "PROGRAM_STOPPED": {
+                    state = MachineState.STOPPED;
                     break;
                 }
                 default: {

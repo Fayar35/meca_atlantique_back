@@ -24,7 +24,6 @@ import meca.atlantique.spring.Data.MachineState;
 import meca.atlantique.spring.Data.MachineStatus;
 
 @Service
-@Transactional
 @AllArgsConstructor
 public class FanucMachineService {
     public final short DEFAULT_PORT = 8193;
@@ -33,22 +32,27 @@ public class FanucMachineService {
     @Autowired
     private final FanucMachineRepository repository;
 
+    @Transactional
     public List<FanucMachine> getAll() {
         return repository.findAll();
     }
 
+    @Transactional
     public FanucMachine getByIp(String ip) {
         return repository.findByIp(ip).orElse(null);
     }
 
+    @Transactional
     public FanucMachine add(FanucMachine machine) {
         return repository.save(machine);
     }
 
+    @Transactional
     public boolean has(String ip) {
         return repository.existsById(ip);
     }
 
+    @Transactional
     public void removeByIp(String ip) {
         repository.deleteByIp(ip);
     }

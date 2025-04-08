@@ -13,7 +13,6 @@ import meca.atlantique.spring.Data.MachineState;
 import meca.atlantique.spring.Data.MachineStatus;
 
 @Service
-@Transactional
 @AllArgsConstructor
 public class HeidenhainMachineService {
     final short DEFAULT_PORT = 19000;
@@ -21,22 +20,27 @@ public class HeidenhainMachineService {
     @Autowired
     private final HeidenhainMachineRepository repository;
 
+    @Transactional
     public List<HeidenhainMachine> getAll() {
         return repository.findAll();
     }
 
+    @Transactional
     public HeidenhainMachine getByIp(String ip) {
         return repository.findByIp(ip).orElse(null);
     }
 
+    @Transactional
     public HeidenhainMachine add(HeidenhainMachine machine) {
         return repository.save(machine);
     }
 
+    @Transactional
     public boolean has(String ip) {
         return repository.existsById(ip);
     }
 
+    @Transactional
     public void removeByIp(String ip) {
         repository.deleteByIp(ip);
     }
