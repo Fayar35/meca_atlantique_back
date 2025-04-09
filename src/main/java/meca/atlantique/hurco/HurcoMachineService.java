@@ -58,6 +58,14 @@ public class HurcoMachineService {
                     state = MachineState.STOPPED;
                     break;
                 }
+                case "ERROR": {
+                    state = MachineState.STOPPED;
+                    break;
+                }
+                case "STOPPED": {
+                    state = MachineState.STOPPED;
+                    break;
+                }
                 default: {
                     System.out.println("Hurco status inconnu : " + prgStatus);
                     state = MachineState.STOPPED;

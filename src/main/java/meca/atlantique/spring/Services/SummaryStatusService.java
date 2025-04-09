@@ -19,21 +19,23 @@ import meca.atlantique.spring.Repositories.SummaryStatusRepository;
 
 @Service
 @AllArgsConstructor
-@Transactional
 public class SummaryStatusService {
     private final SummaryStatusRepository summaryStatusRepository;
     private final MachineRepository machineRepository;
 
     private final MachineStatusService machineStatusService;
 
+    @Transactional
     public void save(SummaryStatus summary) {
         summaryStatusRepository.save(summary);
     }
 
+    @Transactional
     public void deleteSummaryStatus(SummaryStatus status) {
         summaryStatusRepository.deleteById(status.getId());
     }
 
+    @Transactional
     public Optional<SummaryStatus> getSummaryStatus(String ip, LocalDate date) {
         return summaryStatusRepository.findByMachineIpAndDate(ip, date);
     }

@@ -16,30 +16,34 @@ import meca.atlantique.spring.Repositories.MachineStatusRepository;
 
 @Service
 @AllArgsConstructor
-@Transactional
 public class MachineStatusService {
     private final MachineStatusRepository machineStatusRepository;
     private final FanucMachineService fanucMachineService;
     private final HeidenhainMachineService heidenhainMachineService;
     private final HurcoMachineService hurcoMachineService;
 
+    @Transactional
     public void saveMachineStatus(MachineStatus status) {
         machineStatusRepository.save(status);
     }
 
+    @Transactional
     public void deleteMachineStatus(MachineStatus status) {
         machineStatusRepository.deleteById(status.getId());
         machineStatusRepository.flush();
     }
 
+    @Transactional
     public void deleteBefore(LocalDateTime timestamp) {
         machineStatusRepository.deleteByTimestampBefore(timestamp);
     }
 
+    @Transactional
     public List<MachineStatus> getHistoryForDate(String machineIp, LocalDate date) {
         return machineStatusRepository.findByMachineIpAndDate(machineIp, date);
     }
 
+    @Transactional
     public List<MachineStatus> getMachineHistory(String machineIp) {
         return machineStatusRepository.findByMachineIpOrderByTimestampDesc(machineIp);
     }

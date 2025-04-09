@@ -10,12 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import meca.atlantique.spring.Data.Machine;
-import meca.atlantique.spring.Data.MachineStatus;
+import meca.atlantique.spring.Data.MachineDto;
 import meca.atlantique.spring.Data.SummaryStatus;
 import meca.atlantique.spring.Services.MachineService;
 import meca.atlantique.spring.Services.MachineStatusService;
@@ -62,17 +64,6 @@ public class MainController {
         }
     }
 
-    @GetMapping("/testerror")
-    ResponseEntity<?> error() {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lol");
-    }
-
-    @GetMapping("/test")
-    MachineStatus test() {
-        MachineStatus history = new MachineStatus();
-        return history;
-    }
-
     @GetMapping("/getMachineSummary")
     ResponseEntity<?> getMachineSummary(
             @RequestParam String ip, 
@@ -108,6 +99,16 @@ public class MainController {
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la suppression de la machine : " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/updateMachine")
+    ResponseEntity<?> updateMachine(@RequestBody MachineDto machine) {
+        try {
+            machineService.updateMachine(machine);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la modification de la machine : " + e.getMessage());
         }
     }
 }
