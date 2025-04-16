@@ -6,13 +6,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.sun.jna.Library;
-import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Structure;
 import com.sun.jna.ptr.ShortByReference;
 
 public interface FanucApi extends Library {
-    FanucApi INSTANCE = (FanucApi) Native.load("lib/Fwlib32", FanucApi.class);  
 
     public abstract class ODBST extends Structure {
         

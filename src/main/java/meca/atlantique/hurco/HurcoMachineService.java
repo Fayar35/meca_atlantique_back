@@ -66,6 +66,10 @@ public class HurcoMachineService {
                     state = MachineState.STOPPED;
                     break;
                 }
+                case "FEED_HOLD": {
+                    state = MachineState.HOLD;
+                    break;
+                }
                 default: {
                     System.out.println("Hurco status inconnu : " + prgStatus);
                     state = MachineState.STOPPED;

@@ -1,8 +1,0 @@
-{
-    "java.configuration.updateBuildConfiguration": "automatic",
-    "java.saveActions.cleanup": true,
-    "terminal.integrated.env.windows": {
-        "JAVA_HOME": "C:\\Users\\carine\\AppData\\Local\\Programs\\jdk-8-32"
-    },
-    "java.debug.settings.onBuildFailureProceed": true
-}

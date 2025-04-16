@@ -2,16 +2,13 @@ package meca.atlantique.spring.Services;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
-import meca.atlantique.spring.Data.MachineState;
 import meca.atlantique.spring.Data.MachineStatus;
 import meca.atlantique.spring.Data.SummaryStatus;
 import meca.atlantique.spring.Repositories.MachineRepository;
@@ -41,37 +38,49 @@ public class SummaryStatusService {
     }
 
     public SummaryStatus createSummaryStatus(String machineIp, LocalDate date) {
-        Map<String, Long> prgNameUsage = new HashMap<>();
         List<MachineStatus> list =  machineStatusService.getHistoryForDate(machineIp, date);
-        Long totalUsage = 0L;
-        Long totalMeasuredTime = 0L;
+        Long runningDuration = 0L;
+        Long stoppedDuration = 0L;
+        Long holdDuration = 0L;
+        Long unknownDuration = 0L;
+        Long offlineDuration = 0L;
 
         for (int i = 0; i < list.size() - 1; i++) {
             MachineStatus status = list.get(i);
-            if (status.getState() == MachineState.OFFLINE) {
-                continue;
-            }
-
             Long duration = Duration.between(status.getTimestamp(), list.get(i+1).getTimestamp()).toMillis();
-            totalMeasuredTime += duration;
 
-            if (status.getState() == MachineState.RUNNING) {
-                totalUsage  += duration;
-
-                if (!prgNameUsage.containsKey(status.getProgramName())) {
-                    prgNameUsage.put(status.getProgramName(), 0L);
+            switch (status.getState()) {
+                case RUNNING: {
+                    runningDuration  += duration;
+                    break;
                 }
-
-                prgNameUsage.put(status.getProgramName(), prgNameUsage.get(status.getProgramName()) + duration);
+                case STOPPED: {
+                    stoppedDuration += duration;
+                    break;
+                }
+                case HOLD: {
+                    holdDuration += duration;
+                    break;
+                }
+                case UNKNOWN: {
+                    unknownDuration += duration;
+                    break;
+                }
+                case OFFLINE: {
+                    offlineDuration += duration;
+                    break;
+                }
             }
         }
 
         SummaryStatus summary = new SummaryStatus();
         summary.setMachine(machineRepository.findById(machineIp).orElse(null));
         summary.setDate(date);
-        summary.setPrgNameUsage(prgNameUsage);
-        summary.setTotalMeasuredTimeMs(totalMeasuredTime);
-        summary.setTotalUsageMs(totalUsage);
+        summary.setRunningMs(runningDuration);
+        summary.setStoppedMs(stoppedDuration);
+        summary.setHoldMs(holdDuration);
+        summary.setUnknownMs(unknownDuration);
+        summary.setOfflineMs(offlineDuration);
 
         return summary;
     }

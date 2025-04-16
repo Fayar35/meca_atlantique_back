@@ -76,8 +76,8 @@ public class MainController {
                 summaryStatusService.save(sum);
             } else if(date.isEqual(LocalDate.now()) && sumOptional.isPresent()) {
                 sum = summaryStatusService.createSummaryStatus(ip, date);
+                sum.setId(sumOptional.get().getId());
                 summaryStatusService.save(sum);
-                summaryStatusService.deleteSummaryStatus(sumOptional.get());
             } else {                
                 sum = sumOptional.get();
             }

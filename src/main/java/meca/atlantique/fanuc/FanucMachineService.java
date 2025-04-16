@@ -3,6 +3,10 @@ package meca.atlantique.fanuc;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,9 +63,12 @@ public class FanucMachineService {
 
     public FanucMachine collectFanucMachine(String ip, String name, short port) {
         short handle = connectFanucMachine(ip, port);
+        if (handle == -1) {
+            return new FanucMachine(ip, port, name, null, null);
+        }
         
         ODBSYS info_system = new ODBSYS();
-        FanucApi.INSTANCE.cnc_sysinfo(handle, info_system);
+        FanucApiProvider.getInstance().cnc_sysinfo(handle, info_system);
 
         String serialNumber = "Series " + 
             new String(info_system.cnc_type).trim() + 
@@ -77,7 +84,7 @@ public class FanucMachineService {
 
     public short connectFanucMachine(String ip, short port) {
         ShortByReference handle = new ShortByReference();
-        short error_code = FanucApi.INSTANCE.cnc_allclibhndl3(ip, port, new NativeLong(CONNECTION_TIMEOUT), handle);
+        short error_code = FanucApiProvider.getInstance().cnc_allclibhndl3(ip, port, new NativeLong(CONNECTION_TIMEOUT), handle);
         if (error_code != 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cannot connect to " + ip + ":" + port + ", error code : " + error_code);
         }
@@ -87,91 +94,111 @@ public class FanucMachineService {
     public List<MachineStatus> updateFanucMachineStatus() {
         List<FanucMachine> machines = repository.findAll();
         List<MachineStatus> machinesStatus = new ArrayList<>();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
         machines.forEach(machine -> {
-            try {
-                short handle = connectFanucMachine(machine.getIp(), machine.getPort());
-                
-                ODBST stats;
-                MachineState state;
-                if (machine.getSerie() == EnumSeries.SERIE_15 || machine.getSerie() == EnumSeries.SERIE_15i) {
-                    stats = new ODBST_15();
-                    FanucApi.INSTANCE.cnc_statinfo(handle, stats);
-
-                    // status code définis ici :
-                    // https://www.inventcom.net/fanuc-focas-library/Misc/cnc_statinfo
-                    switch(((ODBST_15) stats).run) {
-                        case 0: {
-                            // STOP
-                            state = MachineState.STOPPED;
-                            break;
-                        }
-                        case 1: {
-                            // HOLD
-                            state = MachineState.HOLD;
-                            break;
-                        }
-                        case 2: {
-                            // STaRT
-                            state = MachineState.RUNNING;
-                            break;
-                        }
-                        default: {
-                            System.out.println("Fanuc status inconnu : " + ((ODBST_15) stats).run);
-                            state = MachineState.STOPPED;
-                        }
-                    }
-                } else {
-                    stats = new ODBST_OTHER();
-                    FanucApi.INSTANCE.cnc_statinfo(handle, stats);
-                    
-                    switch(((ODBST_OTHER) stats).run) {
-                        case 0: {
-                            // ****(reset)
-                            state = MachineState.UNKNOWN;
-                            break;
-                        }
-                        case 1: {
-                            // STOP
-                            state = MachineState.STOPPED;
-                            break;
-                        }
-                        case 2: {
-                            // HOLD
-                            state = MachineState.HOLD;
-                            break;
-                        }
-                        case 3: {
-                            // STaRT
-                            state = MachineState.RUNNING;
-                            break;
-                        }
-                        case 4: {
-                            // MSTR (during retraction and re-positioning of tool retraction and recovery, and operation of JOG MDI)
-                            state = MachineState.RUNNING;
-                            break;
-                        }
-                        default: {
-                            System.out.println("Fanuc status inconnu : " + ((ODBST_OTHER) stats).run);
-                            state = MachineState.STOPPED;
-                        }
-                    }
+            Future<?> future = executor.submit(() -> { 
+                MachineStatus status = updateMachine(machine);
+                if (status != null) {
+                    machinesStatus.add(status);
                 }
-
-                ODBEXEPRG exeprg = new ODBEXEPRG();
-                FanucApi.INSTANCE.cnc_exeprgname(handle, exeprg);
-                String programName = new String(exeprg.name, StandardCharsets.UTF_8).trim().replace("\u0000", "");
-
-                MachineStatus status = new MachineStatus();
-                status.setMachine(machine);
-                status.setState(state);
-                status.setProgramName(programName);
-                
-                machinesStatus.add(status);
+            });
+            try {
+                future.get(2, TimeUnit.SECONDS);
             } catch (Exception e) {
-                System.err.println(e.getMessage());
+                System.err.println("erreur lors de l'update machine fanuc : " + machine.getIp());
             }
         });
 
         return machinesStatus;
+    }
+
+    private MachineStatus updateMachine(FanucMachine machine) {
+        try {
+            short handle = connectFanucMachine(machine.getIp(), machine.getPort());
+            if (handle == -1) {
+                System.err.println("Error during connection at Fanuc machine");
+            }
+            
+            ODBST stats;
+            MachineState state;
+            if (machine.getSerie() == EnumSeries.SERIE_15 || machine.getSerie() == EnumSeries.SERIE_15i) {
+                stats = new ODBST_15();
+                FanucApiProvider.getInstance().cnc_statinfo(handle, stats);
+
+                // status code définis ici :
+                // https://www.inventcom.net/fanuc-focas-library/Misc/cnc_statinfo
+                switch(((ODBST_15) stats).run) {
+                    case 0: {
+                        // STOP
+                        state = MachineState.STOPPED;
+                        break;
+                    }
+                    case 1: {
+                        // HOLD
+                        state = MachineState.HOLD;
+                        break;
+                    }
+                    case 2: {
+                        // STaRT
+                        state = MachineState.RUNNING;
+                        break;
+                    }
+                    default: {
+                        System.out.println("Fanuc status inconnu : " + ((ODBST_15) stats).run);
+                        state = MachineState.STOPPED;
+                    }
+                }
+            } else {
+                stats = new ODBST_OTHER();
+                FanucApiProvider.getInstance().cnc_statinfo(handle, stats);
+                
+                switch(((ODBST_OTHER) stats).run) {
+                    case 0: {
+                        // ****(reset)
+                        state = MachineState.UNKNOWN;
+                        break;
+                    }
+                    case 1: {
+                        // STOP
+                        state = MachineState.STOPPED;
+                        break;
+                    }
+                    case 2: {
+                        // HOLD
+                        state = MachineState.HOLD;
+                        break;
+                    }
+                    case 3: {
+                        // STaRT
+                        state = MachineState.RUNNING;
+                        break;
+                    }
+                    case 4: {
+                        // MSTR (during retraction and re-positioning of tool retraction and recovery, and operation of JOG MDI)
+                        state = MachineState.RUNNING;
+                        break;
+                    }
+                    default: {
+                        System.out.println("Fanuc status inconnu : " + ((ODBST_OTHER) stats).run);
+                        state = MachineState.STOPPED;
+                    }
+                }
+            }
+
+            ODBEXEPRG exeprg = new ODBEXEPRG();
+            FanucApiProvider.getInstance().cnc_exeprgname(handle, exeprg);
+            String programName = new String(exeprg.name, StandardCharsets.UTF_8).trim().replace("\u0000", "");
+
+            MachineStatus status = new MachineStatus();
+            status.setMachine(machine);
+            status.setState(state);
+            status.setProgramName(programName);
+            
+            return status;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
     }
 }

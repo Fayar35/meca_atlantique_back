@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,7 @@ public class MachineStatusScheduler {
      * l'état est considéré 'offline' lorsque le dernier état enregistré date d'il y a plus de 2 minutes 
      * (début d'une journée ou mise en pause du système)
      */
+    @Async
     @Scheduled(cron = "0 * 4-23 * * *")
     public void updateMachineStatus() {
         machineStatusService.updateMachineStatus().forEach((status) -> {
