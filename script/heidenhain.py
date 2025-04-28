@@ -97,24 +97,6 @@ def test2(ip):
     #     data = s.recv(1024)
     #     print("Réponse brute:", data)
 
-async def lsv2_telnet():
-    reader, writer = await telnetlib3.open_connection(
-        host='192.168.x.x',  # IP de ta Brainbox
-        port=23,             # Port Telnet configuré
-        encoding='ascii',    # Important : pas d'UTF-8 ici
-        connect_minwait=0.05 # Petit délai pour la négo TELNET
-    )
-
-    print("Connecté. Envoi du ENQ (LSV2)...")
-
-    writer.write('\x05')  # ENQ pour LSV2
-    await writer.drain()
-
-    response = await reader.read(1024)
-    print(f"Réponse brute : {repr(response)}")
-
-    writer.close()
-    await writer.wait_closed()
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Exécute une fonction spécifique.")
@@ -132,5 +114,3 @@ if __name__ == '__main__':
         print(retour)
     elif args.fonction == "test2":
         print(test2(args.argument1))
-    else:
-        asyncio.run(lsv2_telnet())

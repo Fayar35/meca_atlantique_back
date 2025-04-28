@@ -18,6 +18,7 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.ptr.ShortByReference;
 
 import lombok.AllArgsConstructor;
+import meca.atlantique.Utils;
 import meca.atlantique.fanuc.FanucApi.ODBEXEPRG;
 import meca.atlantique.fanuc.FanucApi.ODBST;
 import meca.atlantique.fanuc.FanucApi.ODBST_15;
@@ -106,7 +107,7 @@ public class FanucMachineService {
             try {
                 future.get(2, TimeUnit.SECONDS);
             } catch (Exception e) {
-                System.err.println("erreur lors de l'update machine fanuc : " + machine.getIp());
+                System.err.println(Utils.getTime() + " erreur lors de l'update machine fanuc : " + machine.getIp());
             }
         });
 
@@ -117,7 +118,7 @@ public class FanucMachineService {
         try {
             short handle = connectFanucMachine(machine.getIp(), machine.getPort());
             if (handle == -1) {
-                System.err.println("Error during connection at Fanuc machine");
+                System.err.println(Utils.getTime() + " Erreur lors de la connexion à la machine Fanuc");
             }
             
             ODBST stats;
@@ -145,7 +146,7 @@ public class FanucMachineService {
                         break;
                     }
                     default: {
-                        System.out.println("Fanuc status inconnu : " + ((ODBST_15) stats).run);
+                        System.out.println(Utils.getTime() + " Fanuc status inconnu : " + ((ODBST_15) stats).run);
                         state = MachineState.STOPPED;
                     }
                 }
@@ -180,7 +181,7 @@ public class FanucMachineService {
                         break;
                     }
                     default: {
-                        System.out.println("Fanuc status inconnu : " + ((ODBST_OTHER) stats).run);
+                        System.out.println(Utils.getTime() + " Fanuc status inconnu : " + ((ODBST_OTHER) stats).run);
                         state = MachineState.STOPPED;
                     }
                 }
@@ -197,7 +198,7 @@ public class FanucMachineService {
             
             return status;
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.err.println(Utils.getTime() + " " + e.getMessage());
             return null;
         }
     }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
+import meca.atlantique.Utils;
 import meca.atlantique.spring.Data.MachineState;
 import meca.atlantique.spring.Data.MachineStatus;
 
@@ -105,7 +106,7 @@ public class HeidenhainMachineService {
                     break;
                 }
                 default: {
-                    System.out.println("Heidenhain status inconnu : " + prgStatus);
+                    System.out.println(Utils.getTime() + " Heidenhain status inconnu : " + prgStatus);
                     state = MachineState.STOPPED;
                 }
             }

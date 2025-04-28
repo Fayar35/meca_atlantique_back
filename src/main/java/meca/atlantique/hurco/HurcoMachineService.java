@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
+import meca.atlantique.Utils;
 import meca.atlantique.spring.Data.MachineState;
 import meca.atlantique.spring.Data.MachineStatus;
 
@@ -39,6 +40,9 @@ public class HurcoMachineService {
         List<MachineStatus> machinesStatus = new ArrayList<>();
         machines.forEach(machine -> {
             String prgStatus = MTConnectApi.getPrgStatus(machine.getIp(), machine.getPort());
+            if (prgStatus == null) {
+                return;
+            }
 
             MachineState state;
             switch(prgStatus) {
@@ -71,7 +75,7 @@ public class HurcoMachineService {
                     break;
                 }
                 default: {
-                    System.out.println("Hurco status inconnu : " + prgStatus);
+                    System.out.println(Utils.getTime() + " Hurco status inconnu : " + prgStatus);
                     state = MachineState.STOPPED;
                 }
             }
