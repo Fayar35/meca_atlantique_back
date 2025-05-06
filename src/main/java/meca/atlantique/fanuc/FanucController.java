@@ -49,4 +49,21 @@ public class FanucController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la récuperation des machines fanuc " + e.getMessage());
         }
     }
+
+    @GetMapping("/getAlarmes")
+    public ResponseEntity<?> getAlarmes(@RequestParam String ip) {
+        try {
+            if (!fanucMachineService.has(ip)) {
+                return ResponseEntity.badRequest().body("La machine avec l'ip : " + ip + " n'existe pas dans la base de donnée");
+            }
+            
+            FanucMachine machine = fanucMachineService.getByIp(ip);
+            
+            return ResponseEntity.ok(fanucMachineService.getAlarmeMessages(machine));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erreur lors de la récuperation des messages d'alarme de la machine fanuc " + ip + " : " + e.getMessage());
+        }
+    }
+    
 }

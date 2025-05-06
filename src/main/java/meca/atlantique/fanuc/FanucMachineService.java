@@ -2,6 +2,7 @@ package meca.atlantique.fanuc;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,11 +20,17 @@ import com.sun.jna.ptr.ShortByReference;
 
 import lombok.AllArgsConstructor;
 import meca.atlantique.Utils;
+import meca.atlantique.fanuc.FanucApi.ODBAHIS;
+import meca.atlantique.fanuc.FanucApi.ODBAHIS2;
+import meca.atlantique.fanuc.FanucApi.ODBAHIS5;
 import meca.atlantique.fanuc.FanucApi.ODBEXEPRG;
 import meca.atlantique.fanuc.FanucApi.ODBST;
 import meca.atlantique.fanuc.FanucApi.ODBST_15;
 import meca.atlantique.fanuc.FanucApi.ODBST_OTHER;
 import meca.atlantique.fanuc.FanucApi.ODBSYS;
+import meca.atlantique.fanuc.FanucApi.alm_his;
+import meca.atlantique.fanuc.FanucApi.alm_his2;
+import meca.atlantique.fanuc.FanucApi.alm_his5;
 import meca.atlantique.spring.Data.EnumSeries;
 import meca.atlantique.spring.Data.MachineState;
 import meca.atlantique.spring.Data.MachineStatus;
@@ -201,5 +208,91 @@ public class FanucMachineService {
             System.err.println(Utils.getTime() + " " + e.getMessage());
             return null;
         }
+    }
+
+    public List<String> getAlarmeMessages(FanucMachine machine) {
+        ShortByReference refHandle = new ShortByReference();
+        FanucApiProvider.getInstance().cnc_allclibhndl3(machine.getIp(), machine.getPort(), new NativeLong(2), refHandle);
+        short handle = refHandle.getValue();
+
+        if (machine.getSerie() == EnumSeries.SERIE_15i) {
+            return readAlarmHistory2(handle);
+        } else if (Arrays.asList(EnumSeries.SERIE_0i, EnumSeries.SERIE_30i, EnumSeries.SERIE_31i, EnumSeries.SERIE_32i).contains(machine.getSerie())) {
+            return readAlarmHistory5(handle);         
+        } else {
+            return readAlarmHistory(handle);
+        }
+    }
+
+    private List<String> readAlarmHistory(short handle) {
+        FanucApi api = FanucApiProvider.getInstance();
+        ODBAHIS hist = new ODBAHIS();
+        
+        ShortByReference alarmNumber = new ShortByReference();
+        
+        api.cnc_stopophis(handle);
+        api.cnc_rdalmhisno(handle, alarmNumber);
+
+        hist.almHis = new alm_his[alarmNumber.getValue()];
+
+        api.cnc_rdalmhistry(handle, (short) 1, alarmNumber.getValue(), (short) (6 + 48*alarmNumber.getValue()), hist);
+        api.cnc_startophis(handle);
+
+        List<String> list = new ArrayList<>();
+        Arrays.asList(hist.almHis).forEach(his -> {
+            list.add(formatAlarmMessage(his.year, his.month, his.day, his.hour, his.minute, his.second, (new String(his.alm_msg, StandardCharsets.UTF_8)).trim()));
+        });
+
+        return list;
+    }
+
+    private List<String> readAlarmHistory2(short handle) {
+        FanucApi api = FanucApiProvider.getInstance();
+        ODBAHIS2 hist = new ODBAHIS2();
+        
+        ShortByReference alarmNumber = new ShortByReference();
+        
+        api.cnc_stopophis(handle);
+        api.cnc_rdalmhisno(handle, alarmNumber);
+
+        hist.almHis = new alm_his2[alarmNumber.getValue()];
+
+        api.cnc_rdalmhistry2(handle, (short) 1, alarmNumber.getValue(), (short) (6 + 48*alarmNumber.getValue()), hist);
+        api.cnc_startophis(handle);
+
+        List<String> list = new ArrayList<>();
+        Arrays.asList(hist.almHis).forEach(his -> {
+            list.add(formatAlarmMessage(his.year, his.month, his.day, his.hour, his.minute, his.second, (new String(his.alm_msg, StandardCharsets.UTF_8)).trim()));
+        });
+
+        return list;
+    }
+
+    private List<String> readAlarmHistory5(short handle) {
+        FanucApi api = FanucApiProvider.getInstance();
+        ODBAHIS5 hist = new ODBAHIS5();
+        
+        ShortByReference alarmNumber = new ShortByReference();
+        
+        api.cnc_stopophis(handle);
+        api.cnc_rdalmhisno(handle, alarmNumber);
+
+        hist.almHis = new alm_his5[alarmNumber.getValue()];
+
+        api.cnc_rdalmhistry5(handle, (short) 1, alarmNumber.getValue(), (short) (6 + 48*alarmNumber.getValue()), hist);
+        api.cnc_startophis(handle);
+
+        List<String> list = new ArrayList<>();
+        Arrays.asList(hist.almHis).forEach(his -> {
+            if (his.year > 0) {
+                list.add(formatAlarmMessage(his.year, his.month, his.day, his.hour, his.minute, his.second, (new String(his.alm_msg, StandardCharsets.UTF_8)).trim()));
+            }
+        });
+
+        return list;
+    }
+
+    private String formatAlarmMessage(short year, short month, short day, short hour, short minute, short second, String message) {
+        return String.format("%2d/%2d/%2d [%2d:%2d:%2d] %s", day, month, year, hour, minute, second, message);
     }
 }

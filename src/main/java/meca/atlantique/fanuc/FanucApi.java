@@ -10,6 +10,7 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.Structure;
 import com.sun.jna.ptr.ShortByReference;
 
+// documentation fanuc ici : https://www.inventcom.net/fanuc-focas-library/general/flist_all
 public interface FanucApi extends Library {
 
     public abstract class ODBST extends Structure {
@@ -134,7 +135,126 @@ public interface FanucApi extends Library {
                 .collect(Collectors.toList());
         }
     }
+
+    public class ODBAHIS extends Structure {
+        public short s_no;       /* Start record number      */
+        public short type;       /* Not used                 */
+        public short e_no;       /* Most recently entered    */
+        public alm_his[] almHis;
+        
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList(this.getClass().getDeclaredFields()).stream()
+            .map(Field::getName)
+            .collect(Collectors.toList());
+        }
+    }
     
+    public class alm_his extends Structure {
+        public short      dummy;                  /* Not used            */
+        public short      alm_grp;                /* Alarm type          */
+        public short      alm_no;                 /* Alarm number        */
+        public byte       axis_no;                /* Axis number         */
+        public byte       year;                   /* Year                */
+        public byte       month;                  /* Month               */
+        public byte       day;                    /* Day                 */
+        public byte       hour;                   /* Hour                */
+        public byte       minute;                 /* Minute              */
+        public byte       second;                 /* Second              */
+        public byte       dummy2;                 /* Not used            */
+        public short      len_msg;                /* Length of alarm     */
+        public byte[]     alm_msg = new byte[32]; /* Alarm message       */
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList(this.getClass().getDeclaredFields()).stream()
+            .map(Field::getName)
+            .collect(Collectors.toList());
+        }
+    }
+
+    public class ODBAHIS2 extends Structure {
+        public short s_no;       /* Start record number      */
+        public short e_no;       /* Most recently entered    */
+        public alm_his2[] almHis;
+        
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList(this.getClass().getDeclaredFields()).stream()
+            .map(Field::getName)
+            .collect(Collectors.toList());
+        }
+    }
+    
+    public class alm_his2 extends Structure {
+        public short      alm_grp;                /* Alarm type          */
+        public short      alm_no;                 /* Alarm number        */
+        public byte       axis_no;                /* Axis number         */
+        public byte       year;                   /* Year                */
+        public byte       month;                  /* Month               */
+        public byte       day;                    /* Day                 */
+        public byte       hour;                   /* Hour                */
+        public byte       minute;                 /* Minute              */
+        public byte       second;                 /* Second              */
+        public short      len_msg;                /* Length of alarm     */
+        public byte[]     alm_msg = new byte[32]; /* Alarm message       */
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList(this.getClass().getDeclaredFields()).stream()
+            .map(Field::getName)
+            .collect(Collectors.toList());
+        }
+    }
+    
+    public class ODBAHIS5 extends Structure {
+        public short s_no;       /* Start record number      */
+        public short e_no;       /* Most recently entered    */
+        public alm_his5[] almHis;
+        
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList(this.getClass().getDeclaredFields()).stream()
+            .map(Field::getName)
+            .collect(Collectors.toList());
+        }
+    }
+    
+    public class alm_his5 extends Structure {
+        public short         alm_grp;        /* Alarm type              */
+        public short         alm_no;         /* Alarm number            */
+        public short         axis_no;        /* Axis number or Spindle number */
+        public short         year;           /* Year                    */
+        public short         month;          /* Month                   */
+        public short         day;            /* Day                     */
+        public short         hour;           /* Hour                    */
+        public short         minute;         /* Minute                  */
+        public short         second;         /* Second                  */
+        public short         len_msg;        /* Length of alarm message */
+        public short         pth_no;         /* path number             */
+        public short         dammy;
+        public short         dsp_flg;        /* Flag for displaying */
+        public short         axis_num;       /* Total axis number */
+        public byte[]        alm_msg = new byte[64];        /* Alarm message           */
+        public NativeLong[]  g_modal= new NativeLong[10];   /* Modal data of G code */
+        public byte[]        g_dp = new byte[10];           /* #7=1 There is a command in the present block. */
+                                                            /* #6~#0 place of decimal point */
+        public NativeLong[]  a_modal = new NativeLong[10];  /* Modal data of B,D,E,F,H,M,N,O,S,T code */
+        public byte[]        a_dp = new byte[10];           /* #7=1 There is a command in the present block. */
+                                                            /* #6~#0 place of decimal point */
+        public NativeLong[]  abs_pos = new NativeLong[32];  /* Absolute position in alarm occuring */
+        public byte[]        abs_dp = new byte[32];         /* Place of decimal point for absolute position in alarm occuring */
+        public NativeLong[]  mcn_pos = new NativeLong[32];  /* Machine position in alarm occuring */
+        public byte[]        mcn_dp = new byte[32];         /* Place of decimal point for machine position in alarm occuring */
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList(this.getClass().getDeclaredFields()).stream()
+            .map(Field::getName)
+            .collect(Collectors.toList());
+        }
+    }
+
     // Allocates the library handle and connects to CNC that has the specified IP address or the Host Name.
     short cnc_allclibhndl3(String ipaddr, short port, NativeLong timeout, ShortByReference FlibHndl);
 
@@ -156,4 +276,27 @@ public interface FanucApi extends Library {
 
     // Reads all data specified by the item index.
     short cnc_rdpm_item(short FlibHndl, short start_num, ShortByReference data_num, IODBPMAINTE item);
+
+    // Reads the alarm history data. The unit of one alarm history data is called a record.
+    // The operation history data and the alarm history data are automatically recorded on the CNC. 
+    // When these data are accessed, it is necessary to temporarily stop sampling on the CNC. 
+    // Therefore, it is necessary to execute "Stop logging operation history data"(cnc_stopophis) before this function is used. 
+    short cnc_rdalmhistry(short FlibHndl, short s_no, short e_no, short length, ODBAHIS his);
+
+    // Reads the alarm history data. Please use this function instead of cnc_rdalmhistry for Series 15i. 
+    short cnc_rdalmhistry2(short FlibHndl, short s_no, short e_no, short length, ODBAHIS2 his);
+
+    // Reads the alarm history data. Please use this function instead of cnc_rdalmhistry for Series 30i, 0i-D/F and PMi-A. 
+    short cnc_rdalmhistry5(short FlibHndl, short s_no, short e_no, short length, ODBAHIS5 his);
+
+    // Stops sampling the operation history data and the alarm history data of CNC.
+    // In Series 30i/31i/32i, 0i-D/F and PMi-A, the sampling stop of the external operator's message history is also directed.
+    short cnc_stopophis(short FlibHndl); 
+
+    // Restarts sampling the operation history data and the alarm history data of CNC. 
+    short cnc_startophis(short FlibHndl); 
+
+    // Reads the number of alarm history data.
+    // It is necessary to stop sampling the alarm history data by using cnc_stopophis function before this function is used. 
+    short cnc_rdalmhisno(short FlibHndl, ShortByReference hisno); 
 }
