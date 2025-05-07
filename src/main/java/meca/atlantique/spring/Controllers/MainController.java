@@ -111,4 +111,20 @@ public class MainController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la modification de la machine : " + e.getMessage());
         }
     }
+
+    @GetMapping("/getAlarmes")
+    public ResponseEntity<?> getAlarmes(@RequestParam String ip) {
+        try {
+            if (!machineService.has(ip)) {
+                return ResponseEntity.badRequest().body("La machine avec l'ip : " + ip + " n'existe pas dans la base de donnée");
+            }
+            
+            Machine machine = machineService.getByIp(ip);
+            
+            return ResponseEntity.ok(machineService.getAlarmeMessages(machine));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erreur lors de la récuperation des messages d'alarme de la machine heidenhain " + ip + " : " + e.getMessage());
+        }
+    }
 }

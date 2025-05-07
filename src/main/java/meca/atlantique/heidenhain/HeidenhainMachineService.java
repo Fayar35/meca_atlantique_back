@@ -1,7 +1,10 @@
 package meca.atlantique.heidenhain;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.transaction.Transactional;
 
@@ -121,5 +124,22 @@ public class HeidenhainMachineService {
             machinesStatus.add(status);
         });
         return machinesStatus;
+    }
+
+    public List<String> getAlarmeMessages(HeidenhainMachine machine) {
+        List<String> list = new ArrayList<>();
+        try {
+            File myObj = new File("FCN12000.txt");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                list.add(data);
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("erreur lors de la lecture de FCN12000.txt");
+            e.printStackTrace();
+        }
+        return list;
     }
 }

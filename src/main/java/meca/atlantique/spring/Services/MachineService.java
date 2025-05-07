@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
+import meca.atlantique.fanuc.FanucMachine;
+import meca.atlantique.fanuc.FanucMachineService;
+import meca.atlantique.heidenhain.HeidenhainMachine;
+import meca.atlantique.heidenhain.HeidenhainMachineService;
 import meca.atlantique.spring.Data.Machine;
 import meca.atlantique.spring.Data.MachineDto;
 import meca.atlantique.spring.Repositories.MachineRepository;
@@ -14,8 +18,12 @@ import meca.atlantique.spring.Repositories.MachineRepository;
 @Service
 @AllArgsConstructor
 public class MachineService {
+
+    
     @Autowired
     private final MachineRepository repository;
+    private final FanucMachineService fanucMachineService;
+    private final HeidenhainMachineService heidenhainMachineService;
 
     @Transactional
     public List<Machine> getAll() {
@@ -50,5 +58,15 @@ public class MachineService {
                 return repository.save(machine);
             })
             .orElseThrow(() -> new RuntimeException("Machine non trouvée avec IP : " + machineDto.getIp()));
+    }
+
+    public List<String> getAlarmeMessages(Machine machine) {
+        if (machine instanceof FanucMachine) {
+            return fanucMachineService.getAlarmeMessages((FanucMachine) machine);
+        } else if (machine instanceof HeidenhainMachine) {
+            return heidenhainMachineService.getAlarmeMessages((HeidenhainMachine) machine);
+        }
+
+        return null;
     }
 }

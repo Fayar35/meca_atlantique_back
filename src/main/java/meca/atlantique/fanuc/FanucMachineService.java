@@ -240,7 +240,7 @@ public class FanucMachineService {
 
         List<String> list = new ArrayList<>();
         Arrays.asList(hist.almHis).forEach(his -> {
-            list.add(formatAlarmMessage(his.year, his.month, his.day, his.hour, his.minute, his.second, (new String(his.alm_msg, StandardCharsets.UTF_8)).trim()));
+            list.add(formatAlarmMessage(his.year, his.month, his.day, his.hour, his.minute, his.second, (new String(his.alm_msg, StandardCharsets.UTF_8)).trim(), his.alm_no));
         });
 
         return list;
@@ -262,7 +262,7 @@ public class FanucMachineService {
 
         List<String> list = new ArrayList<>();
         Arrays.asList(hist.almHis).forEach(his -> {
-            list.add(formatAlarmMessage(his.year, his.month, his.day, his.hour, his.minute, his.second, (new String(his.alm_msg, StandardCharsets.UTF_8)).trim()));
+            list.add(formatAlarmMessage(his.year, his.month, his.day, his.hour, his.minute, his.second, (new String(his.alm_msg, StandardCharsets.UTF_8)).trim(), his.alm_no));
         });
 
         return list;
@@ -285,14 +285,14 @@ public class FanucMachineService {
         List<String> list = new ArrayList<>();
         Arrays.asList(hist.almHis).forEach(his -> {
             if (his.year > 0) {
-                list.add(formatAlarmMessage(his.year, his.month, his.day, his.hour, his.minute, his.second, (new String(his.alm_msg, StandardCharsets.UTF_8)).trim()));
+                list.add(formatAlarmMessage(his.year, his.month, his.day, his.hour, his.minute, his.second, (new String(his.alm_msg, StandardCharsets.UTF_8)).trim(), his.alm_no));
             }
         });
 
         return list;
     }
 
-    private String formatAlarmMessage(short year, short month, short day, short hour, short minute, short second, String message) {
-        return String.format("%2d/%2d/%2d [%2d:%2d:%2d] %s", day, month, year, hour, minute, second, message);
+    private String formatAlarmMessage(short year, short month, short day, short hour, short minute, short second, String message, short number) {
+        return String.format("%02d/%02d/%02d [%02d:%02d:%02d] %4d : %s", day, month, year, hour, minute, second, number, message);
     }
 }
