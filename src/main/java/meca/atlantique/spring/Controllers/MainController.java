@@ -1,7 +1,12 @@
 package meca.atlantique.spring.Controllers;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -64,28 +69,90 @@ public class MainController {
         }
     }
 
+    private SummaryStatus getSummaryStatusByDate(String ip, LocalDate date) {
+        Optional<SummaryStatus> sumOptional = summaryStatusService.getSummaryStatus(ip, date);
+        SummaryStatus sum;
+        if (!sumOptional.isPresent()) {
+            sum = summaryStatusService.createSummaryStatus(ip, date);
+            summaryStatusService.save(sum);
+        } else if(date.isEqual(LocalDate.now()) && sumOptional.isPresent()) {
+            // si aujourd'hui, refaire le résumé
+            sum = summaryStatusService.createSummaryStatus(ip, date);
+            sum.setId(sumOptional.get().getId());
+            summaryStatusService.save(sum);
+        } else {
+            sum = sumOptional.get();
+        }
+
+        return sum;
+    }
+
     @GetMapping("/getMachineSummary")
     ResponseEntity<?> getMachineSummary(
             @RequestParam String ip, 
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         try {
-            Optional<SummaryStatus> sumOptional = summaryStatusService.getSummaryStatus(ip, date);
-            SummaryStatus sum;
-            if (!sumOptional.isPresent()) {
-                sum = summaryStatusService.createSummaryStatus(ip, date);
-                summaryStatusService.save(sum);
-            } else if(date.isEqual(LocalDate.now()) && sumOptional.isPresent()) {
-                sum = summaryStatusService.createSummaryStatus(ip, date);
-                sum.setId(sumOptional.get().getId());
-                summaryStatusService.save(sum);
-            } else {                
-                sum = sumOptional.get();
-            }
+            SummaryStatus sum = getSummaryStatusByDate(ip, date);
 
             return ResponseEntity.ok(sum);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la récuperation du résumé : " + e.getMessage());
         }
+    }
+
+    @GetMapping("/getMachineSummaryWeek")
+    ResponseEntity<?> getMachineSummaryWeek(
+        @RequestParam String ip, 
+        @RequestParam int weekNumber,
+        @RequestParam int year) {
+            try {
+                WeekFields weekFields = WeekFields.of(Locale.FRANCE);
+                
+                LocalDate firstWeekDate = LocalDate.of(year, 1, 1)
+                    .with(weekFields.weekOfYear(), weekNumber)
+                    .with(TemporalAdjusters.previousOrSame(weekFields.getFirstDayOfWeek()));
+
+                List<SummaryStatus> listSum = new ArrayList<>();
+                
+                for (int i = 0; i < 7; i++) {
+                    LocalDate date = firstWeekDate.plusDays(i);
+                    if (date.isAfter(LocalDate.now())) {
+                        break;
+                    } else {
+                        listSum.add(getSummaryStatusByDate(ip, date));
+                    }
+                }
+                
+                return ResponseEntity.ok(listSum);
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la récuperation du résumé pour la semaine : " + e.getMessage());
+            }
+    }
+
+    @GetMapping("/getMachineSummaryMonth")
+    ResponseEntity<?> getMachineSummaryMonth(
+        @RequestParam String ip, 
+        @RequestParam int monthNumber,
+        @RequestParam int year) {
+            try {
+                YearMonth yearMonth = YearMonth.of(year, monthNumber);
+                int daysInMonth = yearMonth.lengthOfMonth();
+
+                List<SummaryStatus> listSum = new ArrayList<>();
+                
+                for (int i = 1; i <= daysInMonth; i++) {
+                    LocalDate date = LocalDate.of(year, monthNumber, i);
+                    if (date.isAfter(LocalDate.now())) {
+                        break;
+                    } else {
+                        listSum.add(getSummaryStatusByDate(ip, date));
+                    }
+                }
+                
+                return ResponseEntity.ok(listSum);
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la récuperation du résumé pour le mois : " + e.getMessage());
+            }
     }
 
     @DeleteMapping("/deleteMachine")

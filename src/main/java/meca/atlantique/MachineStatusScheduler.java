@@ -32,12 +32,12 @@ public class MachineStatusScheduler {
             if (list.size() >= 2) {
                 MachineStatus lastElement = list.get(list.size()-1);
                 MachineStatus beforeLastElement = list.get(list.size()-2);
-                LocalDateTime twoMinutesAgo = LocalDateTime.now().minusMinutes(2);
+                LocalDateTime threeMinutesAgo = LocalDateTime.now().minusMinutes(3);
                 
                 // supprime le dernier état s'il est plus recent que 2 minutes,
                 // et est le même que l'avant dernier
                 // (si l'avant dernier est différent ça veut dire que le dernier notifie un changement d'état) 
-                if (lastElement.getTimestamp().isAfter(twoMinutesAgo)) {
+                if (lastElement.getTimestamp().isAfter(threeMinutesAgo)) {
                     if (beforeLastElement.getState() == lastElement.getState()) {
                         list.remove(lastElement);
                         machineStatusService.deleteMachineStatus(lastElement);
