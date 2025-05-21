@@ -4,11 +4,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
+import meca.atlantique.heidenhain.HeidenhainApi;
+import meca.atlantique.heidenhain.HeidenhainMachine;
+import meca.atlantique.heidenhain.HeidenhainMachineService;
 import meca.atlantique.spring.Data.MachineState;
 import meca.atlantique.spring.Data.MachineStatus;
 import meca.atlantique.spring.Services.MachineStatusService;
@@ -17,6 +22,7 @@ import meca.atlantique.spring.Services.MachineStatusService;
 @AllArgsConstructor
 public class MachineStatusScheduler {
     private final MachineStatusService machineStatusService;
+    private final HeidenhainMachineService heidenhainService;
 
     /*
      * enregistre l'état des machines actuel, 
@@ -60,5 +66,16 @@ public class MachineStatusScheduler {
     public void deleteOldHistory() {
         LocalDateTime fourteenDaysAgo = LocalDateTime.now().minusDays(14);
         machineStatusService.deleteBefore(fourteenDaysAgo);
+    }
+
+    @Async
+    @Scheduled(fixedRate = 10000)
+    @Transactional
+    public void checkAlarmsHeidenhain() {
+        List<HeidenhainMachine> machines = heidenhainService.getAll();
+        machines.forEach(m -> {
+            m.addAlarms(HeidenhainApi.getAlarms(m.getIp()));
+            //machineService.save(m);
+        });
     }
 }

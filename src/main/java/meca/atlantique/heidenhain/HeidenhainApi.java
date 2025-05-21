@@ -2,6 +2,10 @@ package meca.atlantique.heidenhain;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class HeidenhainApi {
     private static final String FILE_PATH = "./script/heidenhain.py";
@@ -55,6 +59,36 @@ public class HeidenhainApi {
         } catch (Exception e) {
             e.printStackTrace();
             return "";
+        }
+    }
+
+    public static List<String> getAlarms(String ip) {
+        try {
+            ProcessBuilder pb = new ProcessBuilder("python", FILE_PATH, "get_alarms", ip);
+            Process p = pb.start();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+            List<String> ret = new ArrayList<>();
+            String line = reader.readLine();
+            while (line != null) {
+                String regex = "ALARM : .*";
+                Matcher matcher = Pattern.compile(regex).matcher(line);
+
+                if (matcher.matches()) {
+                    ret.add(line.substring(8));
+                } else {
+                    //si la ligne ne commence pas par "ALARM : " c'est qu'il y a eu une erreur
+                    return new ArrayList<>();
+                }
+
+                line = reader.readLine();
+            }
+
+            return ret;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
 }

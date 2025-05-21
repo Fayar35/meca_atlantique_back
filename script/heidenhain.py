@@ -47,7 +47,7 @@ def get_prg_name(ip):
         client.disconnect()
         return ret
 
-def test(ip):
+def get_alarms(ip):
     with HiddenPrints():
         # Création de l'instance LSV2
         client = pyLSV2.LSV2(ip, timeout=2, port=PORT_CNC, safe_mode=False)
@@ -74,21 +74,18 @@ def test2(ip):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Exécute une fonction spécifique.")
     parser.add_argument("fonction", type=str, help="Nom de la fonction à exécuter")
-    parser.add_argument("argument1", type=str, help="premier argument")
+    parser.add_argument("ip", type=str, help="ip de la machine")
 
     args = parser.parse_args()
 
     if args.fonction == "get_status":
-        print(get_status(args.argument1))
+        print(get_status(args.ip))
     elif args.fonction == "get_prg_name":
-        print(get_prg_name(args.argument1))
-    elif args.fonction == "test":
-        while True:
-            with open("FCN12000.txt", "a") as f:
-                retour = test(args.argument1)
-                for r in retour: f.write(str(r) + '\n')
-                f.write("=====" + str(datetime.datetime.now()) + '\n')
-                f.flush()
-                time.sleep(10)
+        print(get_prg_name(args.ip))
+    elif args.fonction == "get_alarms":
+        retour = get_alarms(args.ip)
+        for r in retour: 
+            if r.e_class == 7 and r.e_group in [1,3,5,6,7]:
+                print("ALARM : " + r.e_text)
     elif args.fonction == "test2":
-        print(test2(args.argument1))
+        print(test2(args.ip))

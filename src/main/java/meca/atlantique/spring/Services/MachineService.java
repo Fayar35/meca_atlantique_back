@@ -60,6 +60,13 @@ public class MachineService {
             .orElseThrow(() -> new RuntimeException("Machine non trouvée avec IP : " + machineDto.getIp()));
     }
 
+    //@Transactional
+    public void save(Machine machine) {
+        if (machine != null) {
+            repository.save(machine);
+        }
+    }
+
     public List<String> getAlarmeMessages(Machine machine) {
         if (machine instanceof FanucMachine) {
             return fanucMachineService.getAlarmeMessages((FanucMachine) machine);
