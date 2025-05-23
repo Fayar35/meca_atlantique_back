@@ -86,6 +86,7 @@ if __name__ == '__main__':
         retour = get_alarms(args.ip)
         for r in retour: 
             if r.e_class == 7 and r.e_group in [1,3,5,6,7]:
-                print("ALARM : " + r.e_text)
+                if r.e_number != -2130705608: #numéro de "824 !Attention-Zone de collision Z!"
+                    print("ALARM : " + r.e_text)
     elif args.fonction == "test2":
         print(test2(args.ip))

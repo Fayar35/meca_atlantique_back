@@ -75,7 +75,6 @@ public class MachineStatusScheduler {
         List<HeidenhainMachine> machines = heidenhainService.getAll();
         machines.forEach(m -> {
             m.addAlarms(HeidenhainApi.getAlarms(m.getIp()));
-            //machineService.save(m);
         });
     }
 }
