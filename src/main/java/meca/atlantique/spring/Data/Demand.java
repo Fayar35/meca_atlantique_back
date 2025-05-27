@@ -25,4 +25,5 @@ public class Demand {
     private Date datePlanned;
     private String description;
     private DemandStatus status;
+    private Priority priority;
 }

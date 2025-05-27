@@ -7,6 +7,7 @@ import meca.atlantique.spring.Data.Demand;
 import meca.atlantique.spring.Data.DemandDto;
 import meca.atlantique.spring.Data.DemandStatus;
 import meca.atlantique.spring.Data.InterventionType;
+import meca.atlantique.spring.Data.Priority;
 
 @Component
 @AllArgsConstructor
@@ -21,6 +22,7 @@ public class DemandMapper {
         dto.setDatePlanned(demand.getDatePlanned());
         dto.setDescription(demand.getDescription());
         dto.setStatus(demand.getStatus().toString());
+        dto.setPriority(demand.getPriority().toString());
         return dto;
     }
 
@@ -64,6 +66,23 @@ public class DemandMapper {
             } 
         }
             
-            return demand;
+        if (dto.getPriority() != null) {
+            switch (dto.getPriority()) {
+                case "PETITE": {
+                    demand.setPriority(Priority.PETITE);
+                    break;
+                }
+                case "NORMALE": {
+                    demand.setPriority(Priority.NORMALE);
+                    break;
+                }
+                case "URGENT": {
+                    demand.setPriority(Priority.URGENT);
+                    break;
+                }
+            } 
         }
+
+        return demand;
     }
+}

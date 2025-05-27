@@ -13,4 +13,5 @@ public class DemandDto {
     private Date datePlanned;
     private String description;
     private String status;
+    private String priority;
 }
