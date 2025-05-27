@@ -1,6 +1,7 @@
 package meca.atlantique.spring.Services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import meca.atlantique.fanuc.FanucMachine;
 import meca.atlantique.fanuc.FanucMachineService;
 import meca.atlantique.heidenhain.HeidenhainMachine;
 import meca.atlantique.heidenhain.HeidenhainMachineService;
+import meca.atlantique.hurco.HurcoMachineService;
 import meca.atlantique.spring.Data.Machine;
 import meca.atlantique.spring.Data.MachineDto;
 import meca.atlantique.spring.Repositories.MachineRepository;
@@ -19,15 +21,23 @@ import meca.atlantique.spring.Repositories.MachineRepository;
 @AllArgsConstructor
 public class MachineService {
 
-    
     @Autowired
     private final MachineRepository repository;
     private final FanucMachineService fanucMachineService;
     private final HeidenhainMachineService heidenhainMachineService;
+    private final HurcoMachineService hurcoMachineService;
 
     @Transactional
     public List<Machine> getAll() {
         return repository.findAll();
+    }
+
+    @Transactional
+    public List<Machine> getAllOnline() {
+        List<Machine> list = fanucMachineService.getAll().stream().map(f -> (Machine) f).collect(Collectors.toList());
+        list.addAll(heidenhainMachineService.getAll().stream().map(f -> (Machine) f).collect(Collectors.toList()));
+        list.addAll(hurcoMachineService.getAll().stream().map(f -> (Machine) f).collect(Collectors.toList()));
+        return list;
     }
 
     @Transactional

@@ -15,15 +15,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
+import meca.atlantique.spring.Data.Demand;
+import meca.atlantique.spring.Data.DemandDto;
 import meca.atlantique.spring.Data.Machine;
 import meca.atlantique.spring.Data.MachineDto;
+import meca.atlantique.spring.Data.OfflineMachine;
 import meca.atlantique.spring.Data.SummaryStatus;
+import meca.atlantique.spring.Mapper.DemandMapper;
+import meca.atlantique.spring.Services.DemandService;
 import meca.atlantique.spring.Services.MachineService;
 import meca.atlantique.spring.Services.MachineStatusService;
 import meca.atlantique.spring.Services.SummaryStatusService;
@@ -35,6 +40,7 @@ public class MainController {
     private final MachineStatusService machineStatusService;
     private final SummaryStatusService summaryStatusService;
     private final MachineService machineService;
+    private final DemandService demandService;
 
     @GetMapping("/getAllMachine")
     ResponseEntity<?> getAllMachine() {
@@ -45,6 +51,30 @@ public class MainController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la récuperation des machines : " + e.getMessage());
         }
     }
+
+    @GetMapping("/getAllOnlineMachine")
+    ResponseEntity<?> getAllOnlineMachine() {
+        try {
+            List<Machine> ret = machineService.getAllOnline();
+            return ResponseEntity.ok(ret);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la récuperation des machines connectées : " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/createOfflineMachine")
+    ResponseEntity<?> createOfflineMachine(@RequestParam String name) {
+        try {            
+            OfflineMachine machine = new OfflineMachine(name);
+            machineService.add(machine);
+            
+            return ResponseEntity.ok(machine);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erreur lors de la création de la machine hors ligne " + name + " : " + e.getMessage());
+        }
+    }
+    
 
     @GetMapping("/getMachine")
     ResponseEntity<?> getMachine(@RequestParam String ip) {
@@ -169,7 +199,7 @@ public class MainController {
         }
     }
 
-    @PutMapping("/updateMachine")
+    @PostMapping("/updateMachine")
     ResponseEntity<?> updateMachine(@RequestBody MachineDto machine) {
         try {
             machineService.updateMachine(machine);
@@ -194,4 +224,63 @@ public class MainController {
                     .body("Erreur lors de la récuperation des messages d'alarme de la machine heidenhain " + ip + " : " + e.getMessage());
         }
     }
+
+    @PostMapping("/createDemand")
+    public ResponseEntity<?> createDemand(@RequestBody DemandDto demandDto) {
+        try {
+            if (demandDto == null) {
+                return ResponseEntity.badRequest().body("erreur lors de la création d'une demande, demandDto est null");
+            }
+            
+            DemandMapper mapper = new DemandMapper();
+            Demand demand = mapper.toEntity(demandDto);
+            demandService.save(demand);
+            
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la création d'une demande : " + e.getMessage());
+        }
+    }
+    
+    @GetMapping("/getAllDemands")
+    public ResponseEntity<?> getAllDemands() {
+        return ResponseEntity.ok(demandService.getAll());
+    }
+
+    @PostMapping("/updateDemand")
+    public ResponseEntity<?> updateDemand(@RequestBody DemandDto demandDto) {
+        try {
+            if (demandDto == null) {
+                return ResponseEntity.badRequest().body("erreur lors de l'update d'une demande, demandDto est null");
+            }
+
+            DemandMapper mapper = new DemandMapper();
+            Demand demand = mapper.toEntity(demandDto);
+            demandService.save(demand);
+            
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la mise à jour d'une demande : " + e.getClass() + " : " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/deleteDemand")
+    public ResponseEntity<?> deleteDemand(@RequestParam Long id) {
+        try {
+            if (id == null) {
+                return ResponseEntity.badRequest().body("erreur lors de la suppression d'une demande, l'ID est null");
+            }
+            
+            if (!demandService.has(id)) {
+                return ResponseEntity.badRequest().body("erreur lors de la suppression d'une demande, aucune demande avec l'ID : " + id);
+            }
+            
+            demandService.removeById(id);
+            
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la supression d'une demande : " + e.getMessage());
+        }
+    }
+    
 }

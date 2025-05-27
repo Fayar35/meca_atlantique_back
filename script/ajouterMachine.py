@@ -7,7 +7,27 @@ DEFAULT_PORT_HURCO = "5000"
 URL = "http://localhost:8080"
 
 def ajouter_machine():
-    # 1.fanuc 2.heidenhain
+    # nom
+    print("Sélectionnez le nom de la machine :")
+    nom = input()
+    
+    print("La machine est-elle connectée ? (oui/non)")
+    connected = input()
+    if (connected == "q"): return
+    while (connected != "oui" and connected != "o" and connected != "non" and connected != "n"):
+        print("Entrez oui ou non")
+        connected = input()
+        if (connected == "q"): return
+
+    if (connected == "non" or connected == "n"):
+        response = requests.post(f"{URL}/createOfflineMachine?name={nom}")
+        if (response.status_code == 200):
+            print("Insertion de la machine dans la base de données réussie")
+        else:
+            print("Insertion de la machine dans la base de données échouée ", response.content)
+        return
+
+    # 1.fanuc 2.heidenhain 3.hurco
     print("Entrez le chiffre correspondant à la marque de la machine : 1.Fanuc 2.Heidenhain 3.Hurco")
     marque = input()
     if (marque == "q"): return
@@ -38,10 +58,6 @@ def ajouter_machine():
         if (port == "q"): return
         if (port == ""):
             port = default_port
-
-    # nom
-    print("Sélectionnez le nom de la machine :")
-    nom = input()
 
     table = "fanuc" if marque == "1" else ("heidenhain" if marque == "2" else "hurco")
 
