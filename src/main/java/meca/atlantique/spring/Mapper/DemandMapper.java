@@ -63,6 +63,10 @@ public class DemandMapper {
                     demand.setInterventionType(InterventionType.PREVENTIF);
                     break;
                 }
+                case "Amélioration": {
+                    demand.setInterventionType(InterventionType.AMELIORATION);
+                    break;
+                }
             } 
         }
             
